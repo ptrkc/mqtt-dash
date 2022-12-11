@@ -1,34 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import "./App.css";
+import { useState } from "react";
+import { client } from "./services/ws";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [customTopic, setCustomTopic] = useState("");
+
+  const publish = async (topic: string, payload: string) => {
+    await client.publish({ topic, payload });
+  };
+  const subToTest = async (topicToSub: string) => {
+    await client.subscribe_topic(topicToSub, (pkt, params, ctx) => {
+      console.log(`received messaged on topic ${params}:`, [pkt.utf8()]);
+    });
+  };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div>
+      <h1>hello mqtt wold</h1>
+      <input
+        value={customTopic}
+        onChange={(e) => setCustomTopic(e.target.value)}
+      />
+      <input value={message} onChange={(e) => setMessage(e.target.value)} />
+      <button onClick={() => subToTest(customTopic)}>
+        sub to "{customTopic}"
+      </button>
+      <button onClick={() => publish(customTopic, message)}>
+        pub to "{customTopic}"
+      </button>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
