@@ -7,7 +7,6 @@ import {
 import { ConnectPage } from "./pages/ConnectPage";
 import { DashHomePage } from "./pages/DashHomePage";
 import MQTTProvider from "./providers/MQTTProvider";
-import { useClient } from "./hooks/useClient";
 
 const router = createBrowserRouter([
   {

@@ -1,39 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import mqtt_client from "u8-mqtt/esm/web/v4.mjs";
-
-async function on_live(mqttClient: typeof mqtt_client) {
-  await mqttClient.connect({
-    client_id: ["my-mqtt--", "--demo"],
-    will: {
-      topic: "u8-mqtt-demo/bye",
-      payload: "gone!",
-    },
-  });
-
-  mqttClient.publish({
-    topic: "u8-mqtt-demo/topic/node-side-fun-test",
-    payload: "awesome from both web and node",
-  });
-
-  mqttClient.send("hello", "hello world");
-}
+import { MQTTContextType } from "../providers/MQTTProvider";
 
 export const useMQTT = () => {
   const [client, setClient] = useState(null);
+  const [status, setStatus] =
+    useState<MQTTContextType["status"]>("disconnected");
+
+  useEffect(() => {
+    if (client !== null) setStatus("connected");
+  }, [client]);
 
   const connect = async (url: string) => {
+    setStatus("connecting");
+    console.log(`trying to connect to ${url}`);
+    const newClient = mqtt_client().with_websock(url);
     try {
-      const newClient = await mqtt_client({ on_live }).with_websock(
-        `ws://${url}`
-      );
-      if (newClient) setClient(newClient);
-      return true;
+      await newClient.connect({
+        client_id: ["mqtt-dash--", "--user"],
+        will: {
+          topic: "mqtt-dash-test",
+          payload: "gone!",
+        },
+      });
+      console.log("connected");
+      setClient(newClient);
     } catch (error) {
-      setClient(null);
       console.log(error);
-      return false;
+      setStatus("error");
     }
   };
 
-  return { client, connect };
+  return { client, connect, status };
 };

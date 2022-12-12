@@ -6,7 +6,7 @@ export function DashHomePage() {
   const { client } = useClient();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [customTopic, setCustomTopic] = useState("");
+  const [customTopic, setCustomTopic] = useState("mqtt-dash-test");
 
   if (!client) return <Navigate to={"/"} />;
 
@@ -15,7 +15,6 @@ export function DashHomePage() {
   };
   const subToTest = async (topic: string) => {
     await client.subscribe_topic(topic, (pkt, params, ctx) => {
-      console.log({ topic, params });
       console.log(`received messaged on topic ${params}:`, [pkt.utf8()]);
     });
   };
