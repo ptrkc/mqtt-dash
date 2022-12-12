@@ -1,15 +1,18 @@
-import { useState } from "react";
-import { redirect } from "react-router-dom";
+import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useClient } from "../hooks/useClient";
 
 export function ConnectPage() {
-  const [url, setUrl] = useState("");
-  const onClick = () => {
-    //TODO:connect
-    console.log("should redirect...");
-    return redirect("/home");
+  const navigate = useNavigate();
+  const { connect } = useClient();
+  const [url, setUrl] = useState("127.0.0.1:9001");
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const connected = await connect(url);
+    return navigate("/home");
   };
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <input
         type="text"
         value={url}

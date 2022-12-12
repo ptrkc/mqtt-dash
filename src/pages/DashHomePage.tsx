@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { client } from "../services/ws";
+import { Navigate } from "react-router-dom";
+import { useClient } from "../hooks/useClient";
 
 export function DashHomePage() {
+  const { client } = useClient();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [customTopic, setCustomTopic] = useState("");
 
+  if (!client) return <Navigate to={"/"} />;
+
   const publish = async (topic: string, payload: string) => {
     await client.publish({ topic, payload });
   };
-  const subToTest = async (topicToSub: string) => {
-    await client.subscribe_topic(topicToSub, (pkt, params, ctx) => {
+  const subToTest = async (topic: string) => {
+    await client.subscribe_topic(topic, (pkt, params, ctx) => {
+      console.log({ topic, params });
       console.log(`received messaged on topic ${params}:`, [pkt.utf8()]);
     });
   };
