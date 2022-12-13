@@ -20,5 +20,6 @@ declare module 'u8-mqtt/esm/web/v4.mjs' {
       ) => void
     ) => Promise<void>;
   }
-  export const mqtt_v4 = () => new MQTTv4();
+  export function mqtt_v4(): MQTTv4;
+  export default mqtt_v4;
 }
