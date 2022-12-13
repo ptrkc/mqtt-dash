@@ -1,15 +1,15 @@
-import { FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useClient } from "../hooks/useClient";
+import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useClient } from '../hooks/useClient';
 
 export function ConnectPage() {
   const navigate = useNavigate();
   const { connect, status } = useClient();
-  const [url, setUrl] = useState("wss://test.mosquitto.org:8081");
+  const [url, setUrl] = useState('wss://test.mosquitto.org:8081');
 
   console.log(status);
   useEffect(() => {
-    if (status === "connected") return navigate("/home");
+    if (status === 'connected') return navigate('/home');
   }, [status]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -17,17 +17,23 @@ export function ConnectPage() {
     await connect(url);
   };
 
-  const isLoading = status === "connecting";
+  const isLoading = status === 'connecting';
   return (
-    <form onSubmit={onSubmit}>
+    <form
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onSubmit={onSubmit}
+      className='h-screen mx-auto max-w-4xl flex flex-col items-center justify-center'
+    >
       <input
-        type="text"
+        type='text'
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        required
         disabled={isLoading}
+        required
       />
-      <button disabled={isLoading}>connect</button>
+      <button className='border rounded-full' disabled={isLoading}>
+        connect
+      </button>
     </form>
   );
 }

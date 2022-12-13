@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { MQTTContext } from "../providers/MQTTProvider";
+import { useContext } from 'react';
+import { MQTTContext } from '../providers/MQTTProvider';
 
 export const useClient = () => {
   const { connect, client, status } = useContext(MQTTContext);

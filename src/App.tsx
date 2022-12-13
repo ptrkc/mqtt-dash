@@ -1,20 +1,15 @@
-import "./App.css";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  redirect,
-} from "react-router-dom";
-import { ConnectPage } from "./pages/ConnectPage";
-import { DashHomePage } from "./pages/DashHomePage";
-import MQTTProvider from "./providers/MQTTProvider";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ConnectPage } from './pages/ConnectPage';
+import { DashHomePage } from './pages/DashHomePage';
+import MQTTProvider from './providers/MQTTProvider';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <ConnectPage />,
   },
   {
-    path: "home",
+    path: 'home',
     element: <DashHomePage />,
   },
 ]);

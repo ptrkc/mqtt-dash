@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useClient } from "../hooks/useClient";
+import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useClient } from '../hooks/useClient';
 
 export function DashHomePage() {
-  const { client } = useClient();
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [customTopic, setCustomTopic] = useState("mqtt-dash-test");
+  const { client, status } = useClient();
+  const [message, setMessage] = useState('');
+  const [customTopic, setCustomTopic] = useState('mqtt-dash-test');
 
-  if (!client) return <Navigate to={"/"} />;
+  if (status === 'disconnected') return <Navigate to={'/'} />;
 
   const publish = async (topic: string, payload: string) => {
     await client.publish({ topic, payload });
   };
   const subToTest = async (topic: string) => {
-    await client.subscribe_topic(topic, (pkt, params, ctx) => {
+    await client.subscribe_topic(topic, (pkt, params) => {
       console.log(`received messaged on topic ${params}:`, [pkt.utf8()]);
     });
+    console.log(`subscribed to ${topic}`);
   };
 
   return (
@@ -27,11 +27,11 @@ export function DashHomePage() {
         onChange={(e) => setCustomTopic(e.target.value)}
       />
       <input value={message} onChange={(e) => setMessage(e.target.value)} />
-      <button onClick={() => subToTest(customTopic)}>
-        sub to "{customTopic}"
+      <button onClick={() => void subToTest(customTopic)}>
+        sub to &quot;{customTopic}&quot;
       </button>
-      <button onClick={() => publish(customTopic, message)}>
-        pub to "{customTopic}"
+      <button onClick={() => void publish(customTopic, message)}>
+        pub to &quot;{customTopic}&quot;
       </button>
     </div>
   );
