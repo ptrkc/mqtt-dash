@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ConnectPage } from './pages/ConnectPage';
 import { DashHomePage } from './pages/DashHomePage';
-import MQTTProvider from './providers/MQTTProvider';
 
 const router = createBrowserRouter([
   {
@@ -15,11 +14,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <MQTTProvider>
-      <RouterProvider router={router} />
-    </MQTTProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

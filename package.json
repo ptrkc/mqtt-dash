@@ -13,7 +13,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.5",
-    "u8-mqtt": "github:shanewholloway/js-u8-mqtt"
+    "u8-mqtt": "github:shanewholloway/js-u8-mqtt",
+    "zustand": "^4.1.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",

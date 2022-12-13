@@ -1,10 +1,15 @@
+import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
+import { useMQTTStore } from '@/hooks/useMQTTStore';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useClient } from '../hooks/useClient';
 
 export function ConnectPage() {
   const navigate = useNavigate();
-  const { connect, status } = useClient();
+  const { connect, status } = useMQTTStore(state => ({
+    connect: state.connect,
+    status: state.status,
+  }));
   const [url, setUrl] = useState('wss://test.mosquitto.org:8081');
 
   console.log(status);
@@ -22,18 +27,19 @@ export function ConnectPage() {
     <form
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={onSubmit}
-      className='h-screen mx-auto max-w-4xl flex flex-col items-center justify-center'
+      className="h-screen mx-auto max-w-4xl flex flex-col items-center justify-center gap-3"
     >
-      <input
-        type='text'
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        disabled={isLoading}
-        required
-      />
-      <button className='border rounded-full' disabled={isLoading}>
-        connect
-      </button>
+      <label className="flex flex-col gap-2">
+        <span>MQTT WebSocket Server:</span>
+        <Input
+          type="text"
+          value={url}
+          onChange={e => setUrl(e.target.value)}
+          disabled={isLoading}
+          required
+        />
+      </label>
+      <Button disabled={isLoading}>connect</Button>
     </form>
   );
 }

@@ -17,10 +17,9 @@ export function Button({
 }: ButtonType) {
   return (
     <button
-      type="button"
       onClick={onClick}
       className={cn(
-        'flex justify-center items-center rounded-full bg-blue-500 font-bold text-white px-3 py-1',
+        'border border-current flex justify-center items-center rounded-full font-bold px-3 py-1',
         icon ? 'pl-0 pr-3' : 'px-2',
         className
       )}
