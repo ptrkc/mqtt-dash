@@ -1,12 +1,12 @@
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
-import { useMQTTStore } from '@/hooks/useMQTTStore';
+import { useBoundStore } from '@/hooks/useBoundStore';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function ConnectPage() {
   const navigate = useNavigate();
-  const { connect, status } = useMQTTStore(state => ({
+  const { connect, status } = useBoundStore(state => ({
     connect: state.connect,
     status: state.status,
   }));

@@ -1,9 +1,10 @@
-import create from 'zustand';
+import { StateCreator } from 'zustand';
 import { mqtt_v4, MQTTv4 } from 'u8-mqtt/esm/web/v4.mjs';
+import { TileSlice } from './tileSlice';
 
 type MQTTStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 
-export interface MQTTState {
+export interface ClientSlice {
   client: MQTTv4;
   status: MQTTStatus;
   connect: (url: string) => Promise<void>;
@@ -11,7 +12,12 @@ export interface MQTTState {
   subscribe: (topic: string) => Promise<void>;
 }
 
-export const useMQTTStore = create<MQTTState>()((set, get) => ({
+export const createClientSlice: StateCreator<
+  ClientSlice & TileSlice,
+  [],
+  [],
+  ClientSlice
+> = (set, get) => ({
   client: mqtt_v4(),
   status: 'disconnected',
   connect: async (url: string) => {
@@ -56,4 +62,4 @@ export const useMQTTStore = create<MQTTState>()((set, get) => ({
       console.log(error);
     }
   },
-}));
+});
