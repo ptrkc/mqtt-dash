@@ -7,12 +7,11 @@ type MQTTStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 export interface ClientSlice {
   client: MQTTv4;
   status: MQTTStatus;
+  lastMessage: Record<string, string>;
   connect: (url: string) => Promise<void>;
-  publish: (options: {
-    topic: string;
-    payload: string | number;
-  }) => Promise<void>;
+  publish: (options: { topic: string; payload: string }) => Promise<void>;
   subscribe: (topic: string) => Promise<void>;
+  unsubscribe: (topic: string) => Promise<void>;
 }
 
 export const createClientSlice: StateCreator<
@@ -23,6 +22,7 @@ export const createClientSlice: StateCreator<
 > = (set, get) => ({
   client: mqtt_v4(),
   status: 'disconnected',
+  lastMessage: {},
   connect: async (url: string) => {
     const client = get().client;
     console.log(`trying to connect to ${url}`);
@@ -45,22 +45,35 @@ export const createClientSlice: StateCreator<
   },
   publish: async (options: { topic: string; payload: string }) => {
     const client = get().client;
-    console.log(`trying to publish`);
     try {
       await client.publish(options);
-      console.log('done');
+      console.log(`%cpublished on ${options.topic}`, 'color: green');
     } catch (error) {
       console.log(error);
     }
   },
   subscribe: async (topic: string) => {
     const client = get().client;
-    console.log(`trying to subscribe`);
     try {
-      await client.subscribe_topic(topic, (pkt, params) => {
-        console.log(`received messaged on topic ${params}:`, [pkt.utf8()]);
+      await client.subscribe_topic(topic, pkt => {
+        console.log(
+          `%creceived messaged on topic ${topic}: ${pkt.utf8()}`,
+          'color: green'
+        );
+        const message = pkt.utf8();
+        const lastMessage = get().lastMessage;
+        set({ lastMessage: { ...lastMessage, [topic]: message } });
       });
       console.log(`%csubscribed to ${topic}`, 'color: green');
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  unsubscribe: async (topic: string) => {
+    const client = get().client;
+    try {
+      await client.unsubscribe([topic]);
+      console.log(`%cunsubscribed to ${topic}`, 'color: red');
     } catch (error) {
       console.log(error);
     }

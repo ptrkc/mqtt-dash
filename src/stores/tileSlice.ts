@@ -7,7 +7,7 @@ interface BaseTile {
 }
 export interface ButtonTilePub extends BaseTile {
   component: 'button';
-  topic: string;
+  topicToPub: string;
   text: string;
   payload: string;
 }
@@ -54,7 +54,7 @@ export const createTileSlice: StateCreator<
     {
       id: 1,
       component: 'button',
-      topic: 'topic',
+      topicToPub: 'topic',
       text: 'text',
       payload: 'payload',
     },
@@ -62,18 +62,27 @@ export const createTileSlice: StateCreator<
       id: 2,
       component: 'range',
       topicToPub: 'range',
-      name: 'Range',
+      name: 'pub',
       min: 0,
       max: 100,
     },
-    // {
-    //   id: 3,
-    //   component: 'range',
-    //   topicToSub: 'range',
-    //   name: 'Range',
-    //   min: 0,
-    //   max: 100,
-    // },
+    {
+      id: 3,
+      component: 'range',
+      topicToSub: 'range',
+      name: 'sub',
+      min: 0,
+      max: 100,
+    },
+    {
+      id: 4,
+      component: 'range',
+      topicToPub: 'range',
+      topicToSub: 'range',
+      name: 'pub-sub',
+      min: 0,
+      max: 100,
+    },
   ],
   subbedTopics: [],
   create: async (url: string) => {

@@ -19,6 +19,7 @@ declare module 'u8-mqtt/esm/web/v4.mjs' {
         params: string
       ) => void
     ) => Promise<void>;
+    unsubscribe: (topic: string[]) => Promise<void>;
   }
   export function mqtt_v4(): MQTTv4;
   export default mqtt_v4;

@@ -1,26 +1,33 @@
-import { useBoundStore } from '@/hooks/useBoundStore';
+import { useTopic } from '@/hooks/useTopic';
 import {
   RangeTilePub,
   RangeTilePubSub,
   RangeTileSub,
 } from '@/stores/tileSlice';
-import { ChangeEventHandler, MouseEventHandler, useState } from 'react';
+import {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useState,
+} from 'react';
 
 export function CustomRange({
   tile: { topicToSub, topicToPub, name = 'Range', min = 0, max = 100 },
 }: {
   tile: RangeTilePub | RangeTileSub | RangeTilePubSub;
 }) {
-  const [inputValue, setInputValue] = useState('0');
-  const { publish } = useBoundStore(state => ({
-    publish: state.publish,
-  }));
+  const { publish, lastMessage = '0' } = useTopic({ topicToPub, topicToSub });
+  const [inputValue, setInputValue] = useState(lastMessage);
+
+  useEffect(() => {
+    setInputValue(lastMessage);
+  }, [lastMessage]);
 
   const onMouseUp: MouseEventHandler<HTMLInputElement> = event => {
-    const value = (event.target as HTMLInputElement).value;
-    setInputValue(value);
-    if (topicToPub) {
-      void publish({ topic: topicToPub, payload: value });
+    if (publish) {
+      const value = (event.target as HTMLInputElement).value;
+      setInputValue(value);
+      void publish(value);
     }
   };
   const onChange: ChangeEventHandler<HTMLInputElement> = event => {
@@ -37,6 +44,7 @@ export function CustomRange({
           type="range"
           min={min}
           max={max}
+          disabled={!topicToPub}
         />
       </label>
     </div>
