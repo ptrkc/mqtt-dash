@@ -1,23 +1,14 @@
+import { TileProps } from '@/stores/tileSlice';
 import { CustomButton } from './CustomButton';
+import { CustomRange } from './CustomRange';
 
-const components = {
-  button: CustomButton,
-};
-
-interface TileProps {
-  component: 'button';
-  topic: string;
-  text: string;
-  payload: string;
-}
-
-export function Tile(props: TileProps) {
-  const { component, ...rest } = props;
-  const Component = components[component];
+export function Tile({ tile }: { tile: TileProps }) {
+  const { component } = tile;
 
   return (
-    <div>
-      <Component {...rest} />
+    <div className="p-2 rounded-md shadow-md">
+      {component === 'button' && <CustomButton tile={tile} />}
+      {component === 'range' && <CustomRange tile={tile} />}
     </div>
   );
 }

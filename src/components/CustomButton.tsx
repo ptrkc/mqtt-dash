@@ -1,15 +1,9 @@
 import { useBoundStore } from '@/hooks/useBoundStore';
+import { ButtonTilePub } from '@/stores/tileSlice';
 import { Button } from './Button';
 
-export function CustomButton({
-  topic,
-  payload,
-  text,
-}: {
-  topic: string;
-  payload: string;
-  text: string;
-}) {
+export function CustomButton({ tile }: { tile: ButtonTilePub }) {
+  const { topic, payload, text } = tile;
   const { publish } = useBoundStore(state => ({
     publish: state.publish,
   }));

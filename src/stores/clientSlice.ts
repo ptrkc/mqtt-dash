@@ -8,7 +8,10 @@ export interface ClientSlice {
   client: MQTTv4;
   status: MQTTStatus;
   connect: (url: string) => Promise<void>;
-  publish: (options: { topic: string; payload: string }) => Promise<void>;
+  publish: (options: {
+    topic: string;
+    payload: string | number;
+  }) => Promise<void>;
   subscribe: (topic: string) => Promise<void>;
 }
 
