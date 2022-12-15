@@ -10,7 +10,7 @@ export function ConnectPage() {
     connect: state.connect,
     status: state.status,
   }));
-  const [url, setUrl] = useState('wss://test.mosquitto.org:8081');
+  const [url, setUrl] = useState('ws://192.168.0.3:9001'); //wss://test.mosquitto.org:8081
 
   console.log(status);
   useEffect(() => {

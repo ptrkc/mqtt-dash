@@ -1,13 +1,23 @@
 import { StateCreator } from 'zustand';
 import { mqtt_v4, MQTTv4 } from 'u8-mqtt/esm/web/v4.mjs';
 import { TileSlice } from './tileSlice';
+import { generateId } from '@/utils/generateId';
 
 type MQTTStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
+export type LogType = 'topic' | 'message' | 'connection' | 'error';
 
 export interface ClientSlice {
   client: MQTTv4;
   status: MQTTStatus;
   lastMessage: Record<string, string>;
+  logs: {
+    id: number;
+    date: number;
+    type: LogType;
+    topic?: string;
+    message: string;
+  }[];
+  log: (log: { type: LogType; topic?: string; message: string }) => void;
   connect: (url: string) => Promise<void>;
   publish: (options: { topic: string; payload: string }) => Promise<void>;
   subscribe: (topic: string) => Promise<void>;
@@ -23,9 +33,16 @@ export const createClientSlice: StateCreator<
   client: mqtt_v4(),
   status: 'disconnected',
   lastMessage: {},
+  logs: [],
+  log: (log: { type: LogType; topic?: string; message: string }) => {
+    const logs = get().logs;
+    const now = Date.now();
+    set({ logs: [...logs, { id: generateId(), date: Date.now(), ...log }] });
+  },
   connect: async (url: string) => {
+    const log = get().log;
     const client = get().client;
-    console.log(`trying to connect to ${url}`);
+    log({ type: 'connection', message: `trying to connect to ${url}` });
     client.with_websock(url);
     try {
       set({ status: 'connecting' });
@@ -36,46 +53,59 @@ export const createClientSlice: StateCreator<
           payload: 'gone!',
         },
       });
-      console.log('connected');
+      log({ type: 'connection', message: `connected to ${url}` });
       set({ status: 'connected' });
     } catch (error) {
-      console.log(error);
+      log({ type: 'error', message: JSON.stringify(error) });
       set({ status: 'error' });
     }
   },
   publish: async (options: { topic: string; payload: string }) => {
+    const log = get().log;
     const client = get().client;
     try {
       await client.publish(options);
-      console.log(`%cpublished on ${options.topic}`, 'color: green');
+      log({
+        type: 'message',
+        topic: options.topic,
+        message: `published: ${options.payload}`,
+      });
     } catch (error) {
-      console.log(error);
+      log({ type: 'error', message: JSON.stringify(error) });
     }
   },
   subscribe: async (topic: string) => {
+    const log = get().log;
     const client = get().client;
     try {
       await client.subscribe_topic(topic, pkt => {
-        console.log(
-          `%creceived messaged on topic ${topic}: ${pkt.utf8()}`,
-          'color: green'
-        );
+        log({
+          type: 'message',
+          topic: topic,
+          message: `received: ${pkt.utf8()}`,
+        });
+
         const message = pkt.utf8();
         const lastMessage = get().lastMessage;
         set({ lastMessage: { ...lastMessage, [topic]: message } });
       });
-      console.log(`%csubscribed to ${topic}`, 'color: green');
+      log({ type: 'topic', topic, message: `subscribed to: ${topic}` });
     } catch (error) {
-      console.log(error);
+      log({ type: 'error', message: JSON.stringify(error) });
     }
   },
   unsubscribe: async (topic: string) => {
+    const log = get().log;
     const client = get().client;
     try {
       await client.unsubscribe([topic]);
-      console.log(`%cunsubscribed to ${topic}`, 'color: red');
+      log({
+        type: 'topic',
+        topic: topic,
+        message: `unsubscribed from: ${topic}`,
+      });
     } catch (error) {
-      console.log(error);
+      log({ type: 'error', message: JSON.stringify(error) });
     }
   },
 });

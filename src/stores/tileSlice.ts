@@ -1,10 +1,15 @@
 import { StateCreator } from 'zustand';
-import { ClientSlice } from './clientSlice';
+import { ClientSlice, LogType } from './clientSlice';
 
 interface BaseTile {
   id: number;
-  component: 'button' | 'range';
+  component: 'button' | 'range' | 'logger';
 }
+export interface LoggerTile extends BaseTile {
+  component: 'logger';
+  types: LogType[];
+}
+
 export interface ButtonTilePub extends BaseTile {
   component: 'button';
   topicToPub: string;
@@ -32,6 +37,7 @@ export interface RangeTilePubSub extends RangeTileBase {
 
 export type TileProps =
   | ButtonTilePub
+  | LoggerTile
   | RangeTilePub
   | RangeTileSub
   | RangeTilePubSub;
@@ -82,6 +88,11 @@ export const createTileSlice: StateCreator<
       name: 'pub-sub',
       min: 0,
       max: 100,
+    },
+    {
+      id: 5,
+      component: 'logger',
+      types: ['error', 'connection', 'message', 'topic'],
     },
   ],
   subbedTopics: [],

@@ -34,19 +34,17 @@ export function CustomRange({
     setInputValue(event.target.value);
   };
   return (
-    <div>
-      <label>
-        {name}
-        <input
-          onMouseUp={onMouseUp}
-          value={inputValue}
-          onChange={onChange}
-          type="range"
-          min={min}
-          max={max}
-          disabled={!topicToPub}
-        />
-      </label>
-    </div>
+    <label className="flex flex-col justify-start items-start">
+      {name}
+      <input
+        onMouseUp={onMouseUp}
+        value={inputValue}
+        onChange={onChange}
+        type="range"
+        min={min}
+        max={max}
+        disabled={!topicToPub}
+      />
+    </label>
   );
 }

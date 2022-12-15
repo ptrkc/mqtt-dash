@@ -3,21 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply text-lg;
+  }
+  h1 {
+    @apply text-3xl font-bold;
+  }
+  h2 {
+    @apply text-2xl font-bold;
+  }
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button,
   input[type='number'] {
     -webkit-appearance: none;
     margin: 0;
     -moz-appearance: textfield !important;
-  }
-
-  body {
-    @apply text-lg;
-  }
-  h2 {
-    @apply text-2xl font-bold;
-  }
-  h1 {
-    @apply text-3xl font-bold;
   }
 }
