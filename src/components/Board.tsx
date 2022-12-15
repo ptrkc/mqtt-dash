@@ -12,8 +12,7 @@ export function Board() {
   }
 
   return (
-    <div className="bg-gray-100">
-      connected
+    <div className="flex gap-2 items-start justify-start flex-wrap">
       {tiles.map(tile => {
         return <Tile key={tile.id} tile={tile} />;
       })}

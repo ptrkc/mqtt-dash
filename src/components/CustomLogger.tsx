@@ -44,7 +44,7 @@ export function CustomLogger({ tile }: { tile: LoggerTile }) {
       <ul
         onScroll={onScroll}
         ref={containerRef}
-        className="bg-white h-64 overflow-auto text-xs p-1"
+        className="bg-white h-40 overflow-auto text-xs p-1"
       >
         {logs.map(log => (
           <li key={log.id}>

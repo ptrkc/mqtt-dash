@@ -19,7 +19,7 @@ export function Button({
     <button
       onClick={onClick}
       className={cn(
-        'border border-current flex justify-center items-center rounded-full font-bold px-3 py-1',
+        'border border-current flex justify-center items-center rounded-full font-bold px-3 py-1 bg-white',
         icon ? 'pl-0 pr-3' : 'px-2',
         className
       )}
