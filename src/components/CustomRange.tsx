@@ -7,9 +7,13 @@ import {
 import {
   ChangeEventHandler,
   MouseEventHandler,
+  TouchEventHandler,
   useEffect,
   useState,
 } from 'react';
+
+type onTouchOrMouseEndType = MouseEventHandler<HTMLInputElement> &
+  TouchEventHandler<HTMLInputElement>;
 
 export function CustomRange({
   tile: { topicToSub, topicToPub, name = 'Range', min = 0, max = 100 },
@@ -23,7 +27,7 @@ export function CustomRange({
     setInputValue(lastMessage);
   }, [lastMessage]);
 
-  const onMouseUp: MouseEventHandler<HTMLInputElement> = event => {
+  const onTouchOrMouseEnd: onTouchOrMouseEndType = event => {
     if (publish) {
       const value = (event.target as HTMLInputElement).value;
       setInputValue(value);
@@ -37,7 +41,8 @@ export function CustomRange({
     <label className="flex flex-col justify-start items-start">
       {name}
       <input
-        onMouseUp={onMouseUp}
+        onMouseUp={onTouchOrMouseEnd}
+        onTouchEnd={onTouchOrMouseEnd}
         value={inputValue}
         onChange={onChange}
         type="range"
