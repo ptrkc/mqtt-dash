@@ -4,7 +4,8 @@ import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { LoggerTile } from '@/stores/tileSlice';
 import { cn } from '@/utils/classnames';
 import { UIEventHandler, useEffect, useRef, useState } from 'react';
-import { Button } from './Button';
+import { IconButton } from './IconButton';
+import { ArrowDownIcon } from './Icons';
 
 const logsSelector = (state: BoundState) => state.logs;
 
@@ -51,18 +52,17 @@ export function CustomLogger({ tile }: { tile: LoggerTile }) {
           </li>
         ))}
       </ul>
-      <Button
+      <IconButton
+        icon={<ArrowDownIcon />}
         className={cn(
-          'absolute bottom-2 -translate-x-1/2 left-1/2 bg-white',
+          'absolute bottom-2 right-2 bg-white',
           autoScroll && 'hidden'
         )}
         onClick={() => {
           scrollToBottom();
           setAutoScroll(true);
         }}
-      >
-        Back to bottom
-      </Button>
+      />
     </div>
   );
 }
