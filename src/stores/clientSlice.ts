@@ -2,6 +2,7 @@ import { StateCreator } from 'zustand';
 import { mqtt_v4, MQTTv4 } from 'u8-mqtt/esm/web/v4.mjs';
 import { TileSlice } from './tileSlice';
 import { generateId } from '@/utils/generateId';
+import { ConfigSlice } from './configSlice';
 
 type MQTTStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 export type LogType = 'topic' | 'message' | 'connection' | 'error';
@@ -25,7 +26,7 @@ export interface ClientSlice {
 }
 
 export const createClientSlice: StateCreator<
-  ClientSlice & TileSlice,
+  ClientSlice & TileSlice & ConfigSlice,
   [],
   [],
   ClientSlice
@@ -36,7 +37,6 @@ export const createClientSlice: StateCreator<
   logs: [],
   log: (log: { type: LogType; topic?: string; message: string }) => {
     const logs = get().logs;
-    const now = Date.now();
     set({ logs: [...logs, { id: generateId(), date: Date.now(), ...log }] });
   },
   connect: async (url: string) => {

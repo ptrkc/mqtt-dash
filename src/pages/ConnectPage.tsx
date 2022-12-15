@@ -6,15 +6,32 @@ import { useNavigate } from 'react-router-dom';
 
 export function ConnectPage() {
   const navigate = useNavigate();
-  const { connect, status } = useBoundStore(state => ({
-    connect: state.connect,
-    status: state.status,
-  }));
-  const [url, setUrl] = useState('ws://192.168.0.3:9001'); //wss://test.mosquitto.org:8081
+  const { connect, status, brokerUrl, setConfig, autoConnect } = useBoundStore(
+    state => ({
+      connect: state.connect,
+      status: state.status,
+      brokerUrl: state.brokerUrl,
+      setConfig: state.setConfig,
+      autoConnect: state.autoConnect,
+    })
+  );
+  const [url, setUrl] = useState(brokerUrl); //ws://192.168.0.3:9001
+  const [autoConnectCheck, setAutoConnectCheck] = useState(autoConnect);
 
   console.log(status);
+  console.log({ brokerUrl, autoConnect });
+
   useEffect(() => {
-    if (status === 'connected') return navigate('/home');
+    if (autoConnect && brokerUrl) {
+      void connect(url).then(() => navigate('/home'));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (status === 'connected') {
+      setConfig({ brokerUrl: url, autoConnect: autoConnectCheck });
+      return navigate('/home');
+    }
   }, [status]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -32,12 +49,21 @@ export function ConnectPage() {
       <label className="flex flex-col gap-2">
         <span>MQTT WebSocket Server:</span>
         <Input
+          placeholder="wss://test.mosquitto.org:8081"
           type="text"
           value={url}
           onChange={e => setUrl(e.target.value)}
           disabled={isLoading}
           required
         />
+      </label>
+      <label className="flex gap-2">
+        <input
+          type="checkbox"
+          checked={autoConnectCheck}
+          onChange={event => setAutoConnectCheck(event.target.checked)}
+        />
+        <span>Keep connected</span>
       </label>
       <Button disabled={isLoading}>connect</Button>
     </form>
