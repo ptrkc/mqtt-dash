@@ -46,19 +46,5 @@ module.exports = {
         exceptions: ['DynamicTag'],
       },
     ],
-
-    indent: 'off',
-    '@typescript-eslint/indent': [
-      'error',
-      2,
-      {
-        ignoredNodes: [
-          'PropertyDefinition[decorators]',
-          'TSUnionType',
-          'TSTypeParameterInstantiation',
-          'TSIntersectionType',
-        ],
-      },
-    ],
   },
 };

@@ -1,10 +1,10 @@
 import { useBoundStore } from '@/hooks/useBoundStore';
-import { Tile } from './Tile';
+import { BlockContainer } from '@/components/BlockContainer';
 
 export function Board() {
-  const { status, tiles } = useBoundStore(state => ({
+  const { status, blocks } = useBoundStore(state => ({
     status: state.status,
-    tiles: state.tiles,
+    blocks: state.blocks,
   }));
 
   if (status === 'disconnected') {
@@ -13,8 +13,8 @@ export function Board() {
 
   return (
     <div className="flex gap-2 items-start justify-start flex-wrap">
-      {tiles.map(tile => {
-        return <Tile key={tile.id} tile={tile} />;
+      {blocks.map(block => {
+        return <BlockContainer key={block.id} block={block} />;
       })}
     </div>
   );

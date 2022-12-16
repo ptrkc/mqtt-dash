@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { TileSlice } from './tileSlice';
+import { BlockSlice } from './blockSlice';
 import { ClientSlice } from './clientSlice';
 
 export interface ConfigSlice {
@@ -9,7 +9,7 @@ export interface ConfigSlice {
 }
 
 export const createConfigSlice: StateCreator<
-  ClientSlice & TileSlice & ConfigSlice,
+  ClientSlice & BlockSlice & ConfigSlice,
   [],
   [],
   ConfigSlice

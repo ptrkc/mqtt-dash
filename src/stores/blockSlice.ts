@@ -2,62 +2,82 @@ import { StateCreator } from 'zustand';
 import { ClientSlice, LogType } from './clientSlice';
 import { ConfigSlice } from './configSlice';
 
-interface BaseTile {
+interface BaseBlock {
   id: number;
-  component: 'button' | 'range' | 'logger';
+  component: 'button' | 'range' | 'logger' | 'switch';
 }
-export interface LoggerTile extends BaseTile {
+export interface LoggerBlock extends BaseBlock {
   component: 'logger';
   types: LogType[];
 }
 
-export interface ButtonTilePub extends BaseTile {
+export interface ButtonBlockPub extends BaseBlock {
   component: 'button';
   topicToPub: string;
   text: string;
   payload: string;
 }
-interface RangeTileBase extends BaseTile {
+interface RangeBlockBase extends BaseBlock {
   component: 'range';
   name?: string;
   min?: number;
   max?: number;
 }
-export interface RangeTileSub extends RangeTileBase {
+export interface RangeBlockSub extends RangeBlockBase {
   topicToSub: string;
   topicToPub?: never;
 }
-export interface RangeTilePub extends RangeTileBase {
+export interface RangeBlockPub extends RangeBlockBase {
   topicToSub?: never;
   topicToPub: string;
 }
-export interface RangeTilePubSub extends RangeTileBase {
+export interface RangeBlockPubSub extends RangeBlockBase {
   topicToPub: string;
   topicToSub: string;
 }
 
-export type TileProps =
-  | ButtonTilePub
-  | LoggerTile
-  | RangeTilePub
-  | RangeTileSub
-  | RangeTilePubSub;
+interface SwitchBlockBase extends BaseBlock {
+  component: 'switch';
+  name?: string;
+}
+export interface SwitchBlockSub extends SwitchBlockBase {
+  topicToSub: string;
+  topicToPub?: never;
+}
+export interface SwitchBlockPub extends SwitchBlockBase {
+  topicToSub?: never;
+  topicToPub: string;
+}
+export interface SwitchBlockPubSub extends SwitchBlockBase {
+  topicToPub: string;
+  topicToSub: string;
+}
 
-export interface TileSlice {
-  tiles: TileProps[];
+export type BlockProps =
+  | ButtonBlockPub
+  | LoggerBlock
+  | RangeBlockPub
+  | RangeBlockSub
+  | RangeBlockPubSub
+  | SwitchBlockPub
+  | SwitchBlockSub
+  | SwitchBlockPubSub;
+
+export interface BlockSlice {
+  blocks: BlockProps[];
   subbedTopics: string[];
   create: (component: string) => Promise<void>;
   delete: (componentId: string) => Promise<void>;
   update: (componentId: string, config: object) => Promise<void>;
 }
 
-export const createTileSlice: StateCreator<
-  ClientSlice & TileSlice & ConfigSlice,
+export const createBlockSlice: StateCreator<
+  ClientSlice & BlockSlice & ConfigSlice,
   [],
   [],
-  TileSlice
+  BlockSlice
 > = (set, get) => ({
-  tiles: [
+  blocks: [
     {
       id: 1,
       component: 'button',
@@ -94,6 +114,25 @@ export const createTileSlice: StateCreator<
       id: 5,
       component: 'logger',
       types: ['error', 'connection', 'message', 'topic'],
+    },
+    {
+      id: 6,
+      component: 'switch',
+      topicToPub: 'switch',
+      name: 'pub',
+    },
+    {
+      id: 7,
+      component: 'switch',
+      topicToSub: 'switch',
+      name: 'sub',
+    },
+    {
+      id: 8,
+      component: 'switch',
+      topicToPub: 'switch',
+      topicToSub: 'switch',
+      name: 'pub-sub',
     },
   ],
   subbedTopics: [],

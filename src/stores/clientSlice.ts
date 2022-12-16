@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
 import { mqtt_v4, MQTTv4 } from 'u8-mqtt/esm/web/v4.mjs';
-import { TileSlice } from './tileSlice';
+import { BlockSlice } from './blockSlice';
 import { generateId } from '@/utils/generateId';
 import { ConfigSlice } from './configSlice';
 
@@ -26,7 +26,7 @@ export interface ClientSlice {
 }
 
 export const createClientSlice: StateCreator<
-  ClientSlice & TileSlice & ConfigSlice,
+  ClientSlice & BlockSlice & ConfigSlice,
   [],
   [],
   ClientSlice

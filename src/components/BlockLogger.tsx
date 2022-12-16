@@ -1,21 +1,20 @@
-import { useMemo } from 'react';
+import { UIEventHandler, useEffect, useMemo, useRef, useState } from 'react';
 import shallow from 'zustand/shallow';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
-import { LoggerTile } from '@/stores/tileSlice';
+import { LoggerBlock } from '@/stores/blockSlice';
 import { cn } from '@/utils/classnames';
-import { UIEventHandler, useEffect, useRef, useState } from 'react';
-import { IconButton } from './IconButton';
-import { ArrowDownIcon } from './Icons';
+import { IconButton } from '@/components/IconButton';
+import { ArrowDownIcon } from '@/components/Icons';
 
 const logsSelector = (state: BoundState) => state.logs;
 
-export function CustomLogger({ tile }: { tile: LoggerTile }) {
+export function BlockLogger({ block }: { block: LoggerBlock }) {
   const [autoScroll, setAutoScroll] = useState(true);
   const lastScrollTop = useRef(0);
   const containerRef = useRef<null | HTMLUListElement>(null);
   const unfilteredLogs = useBoundStore(logsSelector, shallow);
   const logs = useMemo(() => {
-    return unfilteredLogs.filter(log => tile.types.includes(log.type));
+    return unfilteredLogs.filter(log => block.types.includes(log.type));
   }, [unfilteredLogs]);
 
   const scrollToBottom = () => {

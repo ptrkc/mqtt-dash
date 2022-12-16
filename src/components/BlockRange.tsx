@@ -1,9 +1,9 @@
 import { useTopic } from '@/hooks/useTopic';
 import {
-  RangeTilePub,
-  RangeTilePubSub,
-  RangeTileSub,
-} from '@/stores/tileSlice';
+  RangeBlockPub,
+  RangeBlockPubSub,
+  RangeBlockSub,
+} from '@/stores/blockSlice';
 import {
   ChangeEventHandler,
   MouseEventHandler,
@@ -15,10 +15,10 @@ import {
 type onTouchOrMouseEndType = MouseEventHandler<HTMLInputElement> &
   TouchEventHandler<HTMLInputElement>;
 
-export function CustomRange({
-  tile: { topicToSub, topicToPub, name = 'Range', min = 0, max = 100 },
+export function BlockRange({
+  block: { topicToSub, topicToPub, name = 'Range', min = 0, max = 100 },
 }: {
-  tile: RangeTilePub | RangeTileSub | RangeTilePubSub;
+  block: RangeBlockPub | RangeBlockSub | RangeBlockPubSub;
 }) {
   const { publish, lastMessage = '0' } = useTopic({ topicToPub, topicToSub });
   const [inputValue, setInputValue] = useState(lastMessage);
@@ -38,8 +38,8 @@ export function CustomRange({
     setInputValue(event.target.value);
   };
   return (
-    <label className="flex flex-col justify-start items-start">
-      {name}
+    <div className="flex flex-col justify-start items-start">
+      <span>{name}</span>
       <input
         onMouseUp={onTouchOrMouseEnd}
         onTouchEnd={onTouchOrMouseEnd}
@@ -49,7 +49,8 @@ export function CustomRange({
         min={min}
         max={max}
         disabled={!topicToPub}
+        className={'disabled:cursor-not-allowed'}
       />
-    </label>
+    </div>
   );
 }
