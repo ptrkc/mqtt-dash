@@ -38,8 +38,13 @@ export function BlockLogger({ block }: { block: LoggerBlock }) {
     lastScrollTop.current = scrollTop;
   };
 
+  const onClick = () => {
+    scrollToBottom();
+    setAutoScroll(true);
+  };
+
   return (
-    <div className="border relative w-full">
+    <div className="border relative w-80">
       <ul
         onScroll={onScroll}
         ref={containerRef}
@@ -53,14 +58,8 @@ export function BlockLogger({ block }: { block: LoggerBlock }) {
       </ul>
       <IconButton
         icon={<ArrowDownIcon />}
-        className={cn(
-          'absolute bottom-2 right-4 bg-white',
-          autoScroll && 'hidden'
-        )}
-        onClick={() => {
-          scrollToBottom();
-          setAutoScroll(true);
-        }}
+        className={cn('absolute bottom-2 right-4', autoScroll && 'hidden')}
+        onClick={onClick}
       />
     </div>
   );

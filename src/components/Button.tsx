@@ -1,11 +1,13 @@
 import { ReactNode } from 'react';
 import { cn } from '@/utils/classnames';
+import { Spinner } from './Icons';
 
 type ButtonType = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 > & {
   icon?: ReactNode;
+  isLoading?: boolean;
 };
 
 export function Button({
@@ -13,19 +15,25 @@ export function Button({
   onClick,
   className,
   icon,
+  isLoading = false,
+  disabled,
   ...rest
 }: ButtonType) {
+  const iconToShow = isLoading ? <Spinner /> : icon;
   return (
     <button
       onClick={onClick}
       className={cn(
-        'border border-current flex justify-center items-center rounded-full font-bold px-3 py-1 bg-white',
-        icon ? 'pl-0 pr-3' : 'px-2',
+        'flex justify-center items-center rounded-xl font-semibold px-4 py-1 shadow-lg text-white active:shadow-none active:scale-95 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 bg-indigo-500 transition-[filter] hover:bg-indigo-600',
+        !isLoading &&
+          'disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed',
+        iconToShow ? 'pl-0 pr-3' : 'px-2',
         className
       )}
+      disabled={disabled ?? isLoading}
       {...rest}
     >
-      {icon && <span className="w-5 h-5 ml-2 mr-1">{icon}</span>}
+      {iconToShow && <span className="w-5 h-5 ml-2 mr-1">{iconToShow}</span>}
       <span>{children}</span>
     </button>
   );

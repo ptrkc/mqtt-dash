@@ -65,7 +65,7 @@ export function ConnectPage() {
         />
         <span>Keep connected</span>
       </label>
-      <Button disabled={isLoading}>connect</Button>
+      <Button isLoading={isLoading}>connect</Button>
     </form>
   );
 }

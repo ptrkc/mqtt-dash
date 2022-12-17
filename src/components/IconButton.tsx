@@ -17,7 +17,7 @@ export function IconButton({
       type="button"
       onClick={onClick}
       className={cn(
-        'w-8 h-8 p-[6px] shrink-0 flex justify-center items-center rounded-full font-bold border border-current',
+        'w-8 h-8 p-[6px] shadow-lg flex justify-center items-center rounded-full font-bold text-white bg-indigo-500 hover:bg-indigo-600',
         className
       )}
       {...rest}

@@ -36,7 +36,7 @@ export const createClientSlice: StateCreator<
   lastMessage: {},
   logs: [],
   log: (log: { type: LogType; topic?: string; message: string }) => {
-    const logs = get().logs;
+    const logs = get().logs.slice(-999);
     set({ logs: [...logs, { id: generateId(), date: Date.now(), ...log }] });
   },
   connect: async (url: string) => {

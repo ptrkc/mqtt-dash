@@ -29,7 +29,7 @@ export function BlockContainer({ block }: { block: BlockProps }) {
   const topics = `${pub}${pub && sub ? ', ' : ''}${sub}`;
 
   return (
-    <div className="p-2 bg-gray-100 rounded-md shadow-md border">
+    <div className="p-2 bg-white rounded-xl shadow-md border">
       <BlockComponent block={block} />
       <span className="text-xs">{topics}</span>
     </div>

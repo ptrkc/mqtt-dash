@@ -19,7 +19,7 @@ function HomeTop() {
 
   return (
     <div className="flex flex-col mx-auto justify-center items-center gap-3 p-2">
-      <h1>hello mqtt wold</h1>
+      <h1>MQTT-Dash</h1>
       <div className="flex flex-col gap-2 sm:flex-row">
         <div className="flex flex-col items-start gap-2">
           <label className="flex flex-col gap-2">
