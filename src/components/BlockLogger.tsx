@@ -54,7 +54,7 @@ export function BlockLogger({ block }: { block: LoggerBlock }) {
       <IconButton
         icon={<ArrowDownIcon />}
         className={cn(
-          'absolute bottom-2 right-2 bg-white',
+          'absolute bottom-2 right-4 bg-white',
           autoScroll && 'hidden'
         )}
         onClick={() => {
