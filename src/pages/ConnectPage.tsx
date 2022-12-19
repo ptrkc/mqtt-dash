@@ -23,7 +23,9 @@ export function ConnectPage() {
 
   useEffect(() => {
     if (autoConnect && brokerUrl) {
-      void connect(url).then(() => navigate('/home'));
+      connect(url)
+        .then(() => navigate('/home'))
+        .catch(error => console.log(error));
     }
   }, []);
 

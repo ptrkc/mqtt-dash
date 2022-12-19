@@ -7,10 +7,13 @@ import { ConfigSlice } from './configSlice';
 type MQTTStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 export type LogType = 'topic' | 'message' | 'connection' | 'error';
 
+type SubscriptionStatus = 'connecting' | 'connected' | 'error';
+
 export interface ClientSlice {
   client: MQTTv4;
   status: MQTTStatus;
   lastMessage: Record<string, string>;
+  subbedTopics: Record<string, SubscriptionStatus>;
   logs: {
     id: number;
     date: number;
@@ -34,6 +37,7 @@ export const createClientSlice: StateCreator<
   client: mqtt_v4(),
   status: 'disconnected',
   lastMessage: {},
+  subbedTopics: {},
   logs: [],
   log: (log: { type: LogType; topic?: string; message: string }) => {
     const logs = get().logs.slice(-999);
@@ -77,6 +81,17 @@ export const createClientSlice: StateCreator<
   subscribe: async (topic: string) => {
     const log = get().log;
     const client = get().client;
+    const subbedTopics = get().subbedTopics;
+    if (['connected', 'connecting'].includes(subbedTopics[topic])) {
+      return log({
+        type: 'topic',
+        topic,
+        message: `already ${subbedTopics[topic]} to ${topic}`,
+      });
+    }
+
+    log({ type: 'topic', topic, message: `subscribing to: ${topic}` });
+    set({ subbedTopics: { ...subbedTopics, [topic]: 'connecting' } });
     try {
       await client.subscribe_topic(topic, pkt => {
         log({
@@ -87,10 +102,14 @@ export const createClientSlice: StateCreator<
 
         const message = pkt.utf8();
         const lastMessage = get().lastMessage;
-        set({ lastMessage: { ...lastMessage, [topic]: message } });
+        set({
+          lastMessage: { ...lastMessage, [topic]: message },
+          subbedTopics: { ...subbedTopics, [topic]: 'connected' },
+        });
       });
       log({ type: 'topic', topic, message: `subscribed to: ${topic}` });
     } catch (error) {
+      set({ subbedTopics: { ...subbedTopics, [topic]: 'error' } });
       log({ type: 'error', message: JSON.stringify(error) });
     }
   },

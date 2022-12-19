@@ -3,6 +3,7 @@ import { BlockContainer } from '@/components/BlockContainer';
 
 export function Board() {
   const { status, blocks } = useBoundStore(state => ({
+    subscribe: state.subscribe,
     status: state.status,
     blocks: state.blocks,
   }));

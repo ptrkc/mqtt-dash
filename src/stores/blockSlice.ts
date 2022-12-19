@@ -65,7 +65,6 @@ export type BlockProps =
 
 export interface BlockSlice {
   blocks: BlockProps[];
-  subbedTopics: string[];
   create: (component: string) => Promise<void>;
   delete: (componentId: string) => Promise<void>;
   update: (componentId: string, config: object) => Promise<void>;
@@ -135,7 +134,6 @@ export const createBlockSlice: StateCreator<
       name: 'pub-sub',
     },
   ],
-  subbedTopics: [],
   create: async (url: string) => {
     console.log(url);
   },
