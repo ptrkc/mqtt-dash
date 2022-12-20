@@ -44,7 +44,7 @@ export function BlockLogger({ block }: { block: LoggerBlock }) {
   };
 
   return (
-    <div className="border relative w-80">
+    <div className="border relative w-full">
       <ul
         onScroll={onScroll}
         ref={containerRef}

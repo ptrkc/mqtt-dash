@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Board } from '@/components/Board';
-import { useBoundStore } from '@/hooks/useBoundStore';
+import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 
 function HomeTop() {
   const { publish, subscribe } = useBoundStore(
@@ -44,13 +44,10 @@ function HomeTop() {
   );
 }
 
+const statusSelector = (state: BoundState) => state.status;
+
 export function DashHomePage() {
-  const { status } = useBoundStore(
-    state => ({
-      status: state.status,
-    }),
-    shallow
-  );
+  const status = useBoundStore(statusSelector, shallow);
 
   if (status === 'disconnected') return <Navigate to={'/'} />;
 

@@ -63,8 +63,13 @@ export type BlockProps =
   | SwitchBlockSub
   | SwitchBlockPubSub;
 
-export interface BlockSlice {
+export interface BlockGroup {
+  name: string;
+  id: number;
   blocks: BlockProps[];
+}
+export interface BlockSlice {
+  blockGroups: BlockGroup[];
   create: (component: string) => Promise<void>;
   delete: (componentId: string) => Promise<void>;
   update: (componentId: string, config: object) => Promise<void>;
@@ -76,62 +81,80 @@ export const createBlockSlice: StateCreator<
   [],
   BlockSlice
 > = (set, get) => ({
-  blocks: [
+  blockGroups: [
     {
+      name: 'Ranges',
       id: 1,
-      component: 'button',
-      topicToPub: 'topic',
-      text: 'text',
-      payload: 'payload',
+      blocks: [
+        {
+          id: 2,
+          component: 'range',
+          topicToPub: 'range',
+          name: 'pub',
+          min: 0,
+          max: 100,
+        },
+        {
+          id: 3,
+          component: 'range',
+          topicToSub: 'range',
+          name: 'sub',
+          min: 0,
+          max: 100,
+        },
+        {
+          id: 4,
+          component: 'range',
+          topicToPub: 'range',
+          topicToSub: 'range',
+          name: 'pub-sub',
+          min: 0,
+          max: 100,
+        },
+      ],
     },
     {
+      name: 'Switches',
       id: 2,
-      component: 'range',
-      topicToPub: 'range',
-      name: 'pub',
-      min: 0,
-      max: 100,
+      blocks: [
+        {
+          id: 6,
+          component: 'switch',
+          topicToPub: 'switch',
+          name: 'pub',
+        },
+        {
+          id: 7,
+          component: 'switch',
+          topicToSub: 'switch',
+          name: 'sub',
+        },
+        {
+          id: 8,
+          component: 'switch',
+          topicToPub: 'switch',
+          topicToSub: 'switch',
+          name: 'pub-sub',
+        },
+      ],
     },
     {
+      name: 'Logger and Buttons',
       id: 3,
-      component: 'range',
-      topicToSub: 'range',
-      name: 'sub',
-      min: 0,
-      max: 100,
-    },
-    {
-      id: 4,
-      component: 'range',
-      topicToPub: 'range',
-      topicToSub: 'range',
-      name: 'pub-sub',
-      min: 0,
-      max: 100,
-    },
-    {
-      id: 5,
-      component: 'logger',
-      types: ['error', 'connection', 'message', 'topic'],
-    },
-    {
-      id: 6,
-      component: 'switch',
-      topicToPub: 'switch',
-      name: 'pub',
-    },
-    {
-      id: 7,
-      component: 'switch',
-      topicToSub: 'switch',
-      name: 'sub',
-    },
-    {
-      id: 8,
-      component: 'switch',
-      topicToPub: 'switch',
-      topicToSub: 'switch',
-      name: 'pub-sub',
+      blocks: [
+        {
+          id: 1,
+          component: 'button',
+          topicToPub: 'topic',
+          text: 'text',
+          payload: 'payload',
+        },
+        {
+          id: 5,
+          component: 'logger',
+          types: ['error', 'connection', 'message', 'topic'],
+        },
+      ],
     },
   ],
   create: async (url: string) => {

@@ -1,6 +1,6 @@
 import shallow from 'zustand/shallow';
 import { useBoundStore } from './useBoundStore';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export const useTopic = ({
   topicToPub,
@@ -14,11 +14,14 @@ export const useTopic = ({
     lastMessage,
     subscribe,
   } = useBoundStore(
-    state => ({
-      publish: state.publish,
-      subscribe: state.subscribe,
-      lastMessage: topicToSub && state.lastMessage[topicToSub],
-    }),
+    useCallback(
+      state => ({
+        publish: state.publish,
+        subscribe: state.subscribe,
+        lastMessage: topicToSub && state.lastMessage[topicToSub],
+      }),
+      []
+    ),
     shallow
   );
 
@@ -26,8 +29,8 @@ export const useTopic = ({
     const subscribeToTopic = async (topic: string) => {
       await subscribe(topic);
     };
-    if (topicToPub) {
-      subscribeToTopic(topicToPub).catch(error => console.log(error));
+    if (topicToSub) {
+      subscribeToTopic(topicToSub).catch(error => console.log(error));
     }
   }, []);
 

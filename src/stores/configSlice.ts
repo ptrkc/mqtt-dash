@@ -17,7 +17,6 @@ export const createConfigSlice: StateCreator<
   autoConnect: false,
   brokerUrl: '',
   setConfig: (config: Partial<ConfigSlice>) => {
-    console.log(config);
     set(config);
   },
 });

@@ -49,7 +49,7 @@ export function BlockRange({
         min={min}
         max={max}
         disabled={!topicToPub}
-        className={'disabled:cursor-not-allowed'}
+        className="disabled:cursor-not-allowed w-full"
       />
     </div>
   );

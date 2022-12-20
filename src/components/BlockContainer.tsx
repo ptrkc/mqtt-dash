@@ -20,18 +20,9 @@ function BlockComponent({ block }: { block: BlockProps }) {
 }
 
 export function BlockContainer({ block }: { block: BlockProps }) {
-  const pub =
-    ('topicToPub' in block && block.topicToPub && `pub: ${block.topicToPub}`) ||
-    '';
-  const sub =
-    ('topicToSub' in block && block.topicToSub && `sub: ${block.topicToSub}`) ||
-    '';
-  const topics = `${pub}${pub && sub ? ', ' : ''}${sub}`;
-
   return (
-    <div className="p-2 bg-white rounded-xl shadow-md border">
+    <div className="flex flex-col p-2">
       <BlockComponent block={block} />
-      <span className="text-xs">{topics}</span>
     </div>
   );
 }

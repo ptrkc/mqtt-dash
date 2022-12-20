@@ -18,10 +18,8 @@ export function ConnectPage() {
   const [url, setUrl] = useState(brokerUrl); //ws://192.168.0.3:9001
   const [autoConnectCheck, setAutoConnectCheck] = useState(autoConnect);
 
-  console.log(status);
-  console.log({ brokerUrl, autoConnect });
-
   useEffect(() => {
+    localStorage.clear(); //TODO: REMOVE
     if (autoConnect && brokerUrl) {
       connect(url)
         .then(() => navigate('/home'))

@@ -1,21 +1,15 @@
-import { useBoundStore } from '@/hooks/useBoundStore';
-import { BlockContainer } from '@/components/BlockContainer';
+import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
+import { BlockGroupContainer } from '@/components/BlockGroupContainer';
+
+const blockGroupsSelector = (state: BoundState) => state.blockGroups;
 
 export function Board() {
-  const { status, blocks } = useBoundStore(state => ({
-    subscribe: state.subscribe,
-    status: state.status,
-    blocks: state.blocks,
-  }));
-
-  if (status === 'disconnected') {
-    return <div>You are disconnected from the server.</div>;
-  }
+  const blockGroups = useBoundStore(blockGroupsSelector);
 
   return (
-    <div className="flex gap-2 items-start justify-start flex-wrap">
-      {blocks.map(block => {
-        return <BlockContainer key={block.id} block={block} />;
+    <div className="flex justify-center flex-wrap gap-2">
+      {blockGroups.map(group => {
+        return <BlockGroupContainer key={group.id} group={group} />;
       })}
     </div>
   );
