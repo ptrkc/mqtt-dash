@@ -82,13 +82,7 @@ export const createClientSlice: StateCreator<
     const log = get().log;
     const client = get().client;
     const subbedTopics = get().subbedTopics;
-    if (['subscribed', 'subscribing'].includes(subbedTopics[topic])) {
-      return log({
-        type: 'topic',
-        topic,
-        message: `already ${subbedTopics[topic]} to ${topic}`,
-      });
-    }
+    if (['subscribed', 'subscribing'].includes(subbedTopics[topic])) return;
 
     log({ type: 'topic', topic, message: `subscribing to: ${topic}` });
     set({ subbedTopics: { ...subbedTopics, [topic]: 'subscribing' } });

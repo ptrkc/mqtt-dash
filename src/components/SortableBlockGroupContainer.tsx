@@ -3,15 +3,16 @@ import { CSS } from '@dnd-kit/utilities';
 import { BlockGroup } from '@/stores/blockSlice';
 import { BlockGroupContainer } from './BlockGroupContainer';
 
-export function SortableBlockGroupContainer({
-  group,
-  activeGroupId,
-}: {
-  group: BlockGroup;
-  activeGroupId?: number;
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: group.id });
+export function SortableBlockGroupContainer({ group }: { group: BlockGroup }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+    isSorting,
+  } = useSortable({ id: group.id });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -20,7 +21,8 @@ export function SortableBlockGroupContainer({
 
   return (
     <BlockGroupContainer
-      activeGroupId={activeGroupId}
+      isDragging={isDragging}
+      isSorting={isSorting}
       group={group}
       ref={setNodeRef}
       style={style}

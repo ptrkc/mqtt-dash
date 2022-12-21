@@ -49,11 +49,7 @@ export function Board() {
       >
         <SortableContext strategy={rectSortingStrategy} items={blockGroups}>
           {blockGroups.map(group => (
-            <SortableBlockGroupContainer
-              activeGroupId={activeGroup?.id}
-              key={group.id}
-              group={group}
-            />
+            <SortableBlockGroupContainer key={group.id} group={group} />
           ))}
         </SortableContext>
         <DragOverlay>

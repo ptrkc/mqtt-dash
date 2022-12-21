@@ -11,25 +11,27 @@ export const BlockGroupContainer = forwardRef(
   (
     {
       group,
-      activeGroupId,
       listeners,
       attributes,
       style,
+      isSorting,
+      isDragging,
     }: {
       group: BlockGroup;
-      activeGroupId?: number;
       style?: React.CSSProperties;
       attributes?: DraggableAttributes;
       listeners?: SyntheticListenerMap;
+      isSorting?: boolean;
+      isDragging?: boolean;
     },
     ref: Ref<HTMLDivElement>
   ) => {
     return (
       <div
         className={cn(
-          'relative flex flex-col bg-white rounded-xl shadow-md border w-full max-w-sm overflow-scroll',
-          activeGroupId !== undefined && 'h-64',
-          activeGroupId === group.id && 'opacity-40'
+          'flex flex-col bg-white rounded-xl shadow-md border w-full max-w-sm overflow-hidden',
+          isSorting && 'h-60',
+          isDragging && 'opacity-40'
         )}
         style={style}
         ref={ref}
@@ -43,12 +45,6 @@ export const BlockGroupContainer = forwardRef(
             return <BlockContainer key={block.id} block={block} />;
           })}
         </div>
-        <div
-          className={cn(
-            'absolute left-0 right-0 bottom-0 h-20 bg-gradient-to-t from-black/30',
-            activeGroupId !== undefined ? 'block' : 'hidden'
-          )}
-        />
       </div>
     );
   }
