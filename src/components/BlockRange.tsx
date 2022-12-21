@@ -1,4 +1,4 @@
-import { useTopic } from '@/hooks/useTopic';
+import { useBlock } from '@/hooks/useBlock';
 import {
   RangeBlockPub,
   RangeBlockPubSub,
@@ -16,11 +16,23 @@ type onTouchOrMouseEndType = MouseEventHandler<HTMLInputElement> &
   TouchEventHandler<HTMLInputElement>;
 
 export function BlockRange({
-  block: { topicToSub, topicToPub, name = 'Range', min = 0, max = 100 },
+  block: {
+    topicToSub,
+    topicToPub,
+    name = 'Range',
+    min = 0,
+    max = 100,
+    localState,
+    id,
+  },
 }: {
   block: RangeBlockPub | RangeBlockSub | RangeBlockPubSub;
 }) {
-  const { publish, lastMessage = '0' } = useTopic({ topicToPub, topicToSub });
+  const { publish, lastMessage = localState ?? '0' } = useBlock({
+    topicToPub,
+    topicToSub,
+    blockId: id,
+  });
   const [inputValue, setInputValue] = useState(lastMessage);
 
   useEffect(() => {
@@ -28,10 +40,10 @@ export function BlockRange({
   }, [lastMessage]);
 
   const onTouchOrMouseEnd: onTouchOrMouseEndType = event => {
-    if (publish) {
+    if (topicToPub) {
       const value = (event.target as HTMLInputElement).value;
       setInputValue(value);
-      void publish(value);
+      publish(value);
     }
   };
   const onChange: ChangeEventHandler<HTMLInputElement> = event => {

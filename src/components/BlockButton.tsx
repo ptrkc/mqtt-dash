@@ -1,13 +1,12 @@
 import { Button } from '@/components/Button';
-import { useTopic } from '@/hooks/useTopic';
+import { useBlock } from '@/hooks/useBlock';
 import { ButtonBlockPub } from '@/stores/blockSlice';
 
 export function BlockButton({ block }: { block: ButtonBlockPub }) {
   const { topicToPub, payload, text } = block;
-  const { publish } = useTopic({ topicToPub });
+  const { publish } = useBlock({ topicToPub });
 
-  const onClick = () => {
-    void publish?.(payload);
-  };
+  const onClick = () => publish(payload);
+
   return <Button onClick={onClick}>{text}</Button>;
 }

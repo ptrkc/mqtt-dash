@@ -3,9 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    scroll-behavior: smooth;
-  }
   body {
     @apply text-lg;
   }

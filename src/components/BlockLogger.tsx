@@ -17,15 +17,20 @@ export function BlockLogger({ block }: { block: LoggerBlock }) {
     return unfilteredLogs.filter(log => block.types.includes(log.type));
   }, [unfilteredLogs]);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = ({ smooth }: { smooth: boolean }) => {
     containerRef.current?.scrollTo({
       top: containerRef.current.scrollHeight,
+      behavior: smooth ? 'smooth' : 'auto',
     });
   };
 
   useEffect(() => {
+    scrollToBottom({ smooth: false });
+  }, []);
+
+  useEffect(() => {
     if (autoScroll) {
-      scrollToBottom();
+      scrollToBottom({ smooth: true });
     }
   }, [logs]);
 
@@ -39,7 +44,7 @@ export function BlockLogger({ block }: { block: LoggerBlock }) {
   };
 
   const onClick = () => {
-    scrollToBottom();
+    scrollToBottom({ smooth: true });
     setAutoScroll(true);
   };
 

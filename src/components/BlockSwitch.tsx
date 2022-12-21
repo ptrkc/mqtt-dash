@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Switch } from '@/components/Switch';
-import { useTopic } from '@/hooks/useTopic';
+import { useBlock } from '@/hooks/useBlock';
 import {
   SwitchBlockPub,
   SwitchBlockPubSub,
@@ -8,21 +8,25 @@ import {
 } from '@/stores/blockSlice';
 
 export function BlockSwitch({
-  block: { topicToSub, topicToPub, name = 'Switch' },
+  block: { topicToSub, topicToPub, localState, name = 'Switch', id },
 }: {
   block: SwitchBlockPub | SwitchBlockSub | SwitchBlockPubSub;
 }) {
-  const { publish, lastMessage = '0' } = useTopic({ topicToPub, topicToSub });
-  const [isOn, setIsOn] = useState(false);
+  const { publish, lastMessage = localState ?? '0' } = useBlock({
+    topicToPub,
+    topicToSub,
+    blockId: id,
+  });
+  const [isOn, setIsOn] = useState(lastMessage === '0' ? false : true);
 
   useEffect(() => {
     setIsOn(lastMessage === '1');
   }, [lastMessage]);
 
   const onChange = () => {
-    if (publish) {
+    if (topicToPub) {
       setIsOn(!isOn);
-      void publish(isOn ? '0' : '1');
+      publish(isOn ? '0' : '1');
     }
   };
 

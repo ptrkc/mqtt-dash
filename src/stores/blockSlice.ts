@@ -23,34 +23,40 @@ interface RangeBlockBase extends BaseBlock {
   min?: number;
   max?: number;
 }
-export interface RangeBlockSub extends RangeBlockBase {
-  topicToSub: string;
-  topicToPub?: never;
-}
 export interface RangeBlockPub extends RangeBlockBase {
   topicToSub?: never;
   topicToPub: string;
+  localState: string;
+}
+export interface RangeBlockSub extends RangeBlockBase {
+  topicToSub: string;
+  topicToPub?: never;
+  localState?: never;
 }
 export interface RangeBlockPubSub extends RangeBlockBase {
   topicToPub: string;
   topicToSub: string;
+  localState?: never;
 }
 
 interface SwitchBlockBase extends BaseBlock {
   component: 'switch';
   name?: string;
 }
-export interface SwitchBlockSub extends SwitchBlockBase {
-  topicToSub: string;
-  topicToPub?: never;
-}
 export interface SwitchBlockPub extends SwitchBlockBase {
   topicToSub?: never;
   topicToPub: string;
+  localState: string;
+}
+export interface SwitchBlockSub extends SwitchBlockBase {
+  topicToSub: string;
+  topicToPub?: never;
+  localState?: never;
 }
 export interface SwitchBlockPubSub extends SwitchBlockBase {
   topicToPub: string;
   topicToSub: string;
+  localState?: never;
 }
 
 export type BlockProps =
@@ -70,9 +76,10 @@ export interface BlockGroup {
 }
 export interface BlockSlice {
   blockGroups: BlockGroup[];
+  setBlockGroups: (blockGroups: BlockGroup[]) => void;
   create: (component: string) => Promise<void>;
   delete: (componentId: string) => Promise<void>;
-  update: (componentId: string, config: object) => Promise<void>;
+  updateLocalState: (blockId: number, value: string) => void;
 }
 
 export const createBlockSlice: StateCreator<
@@ -93,6 +100,7 @@ export const createBlockSlice: StateCreator<
           name: 'pub',
           min: 0,
           max: 100,
+          localState: '100',
         },
         {
           id: 3,
@@ -122,6 +130,7 @@ export const createBlockSlice: StateCreator<
           component: 'switch',
           topicToPub: 'switch',
           name: 'pub',
+          localState: '0',
         },
         {
           id: 7,
@@ -157,13 +166,23 @@ export const createBlockSlice: StateCreator<
       ],
     },
   ],
+  setBlockGroups: (blockGroups: BlockGroup[]) => {
+    return set({ blockGroups });
+  },
   create: async (url: string) => {
     console.log(url);
   },
   delete: async (componentId: string) => {
     console.log(componentId);
   },
-  update: async (topic: string) => {
-    console.log(topic);
+  updateLocalState: (blockId: number, value: string) => {
+    const groups = get().blockGroups;
+    for (const { blocks } of groups) {
+      const foundBlock = blocks.find(block => block.id === blockId);
+      if (foundBlock && 'localState' in foundBlock) {
+        foundBlock.localState = value;
+        return set({ blockGroups: groups });
+      }
+    }
   },
 });

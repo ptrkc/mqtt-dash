@@ -7,7 +7,7 @@ import { ConfigSlice } from './configSlice';
 type MQTTStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
 export type LogType = 'topic' | 'message' | 'connection' | 'error';
 
-type SubscriptionStatus = 'connecting' | 'connected' | 'error';
+type SubscriptionStatus = 'subscribing' | 'subscribed' | 'error';
 
 export interface ClientSlice {
   client: MQTTv4;
@@ -82,7 +82,7 @@ export const createClientSlice: StateCreator<
     const log = get().log;
     const client = get().client;
     const subbedTopics = get().subbedTopics;
-    if (['connected', 'connecting'].includes(subbedTopics[topic])) {
+    if (['subscribed', 'subscribing'].includes(subbedTopics[topic])) {
       return log({
         type: 'topic',
         topic,
@@ -91,7 +91,7 @@ export const createClientSlice: StateCreator<
     }
 
     log({ type: 'topic', topic, message: `subscribing to: ${topic}` });
-    set({ subbedTopics: { ...subbedTopics, [topic]: 'connecting' } });
+    set({ subbedTopics: { ...subbedTopics, [topic]: 'subscribing' } });
     try {
       await client.subscribe_topic(topic, pkt => {
         log({
@@ -99,17 +99,12 @@ export const createClientSlice: StateCreator<
           topic: topic,
           message: `received: ${pkt.utf8()}`,
         });
-
-        const message = pkt.utf8();
-        const lastMessage = get().lastMessage;
-        set({
-          lastMessage: { ...lastMessage, [topic]: message },
-          subbedTopics: { ...subbedTopics, [topic]: 'connected' },
-        });
+        set({ lastMessage: { ...get().lastMessage, [topic]: pkt.utf8() } });
       });
+      set({ subbedTopics: { ...get().subbedTopics, [topic]: 'subscribed' } });
       log({ type: 'topic', topic, message: `subscribed to: ${topic}` });
     } catch (error) {
-      set({ subbedTopics: { ...subbedTopics, [topic]: 'error' } });
+      set({ subbedTopics: { ...get().subbedTopics, [topic]: 'error' } });
       log({ type: 'error', message: JSON.stringify(error) });
     }
   },
