@@ -1,9 +1,9 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { BlockGroup } from '@/stores/blockSlice';
-import { BlockGroupContainer } from './BlockGroupContainer';
+import { BlockProps } from '@/stores/blockSlice';
+import { BlockContainer } from './BlockContainer';
 
-export function SortableBlockGroupContainer({ group }: { group: BlockGroup }) {
+export function SortableBlockContainer({ block }: { block: BlockProps }) {
   const {
     attributes,
     listeners,
@@ -11,8 +11,7 @@ export function SortableBlockGroupContainer({ group }: { group: BlockGroup }) {
     transform,
     transition,
     isDragging,
-    isSorting,
-  } = useSortable({ id: group.id });
+  } = useSortable({ id: block.id });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -20,10 +19,9 @@ export function SortableBlockGroupContainer({ group }: { group: BlockGroup }) {
   };
 
   return (
-    <BlockGroupContainer
-      group={group}
+    <BlockContainer
+      block={block}
       isDragging={isDragging}
-      isSorting={isSorting}
       ref={setNodeRef}
       style={style}
       attributes={attributes}

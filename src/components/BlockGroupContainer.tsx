@@ -1,10 +1,24 @@
-import { BlockGroup } from '@/stores/blockSlice';
+import { BlockGroup, BlockProps } from '@/stores/blockSlice';
 import { BlockContainer } from './BlockContainer';
-import { forwardRef, Ref } from 'react';
+import { forwardRef, Ref, useState } from 'react';
 import { Handle } from './Handle';
 import { DraggableAttributes } from '@dnd-kit/core';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import { cn } from '@/utils/classnames';
+import {
+  DndContext,
+  closestCenter,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { useBoundStore } from '@/hooks/useBoundStore';
+import { SortableBlockContainer } from './SortableBlockContainer';
 
 // eslint-disable-next-line react/display-name
 export const BlockGroupContainer = forwardRef(
@@ -26,6 +40,28 @@ export const BlockGroupContainer = forwardRef(
     },
     ref: Ref<HTMLDivElement>
   ) => {
+    const [activeBlock, setActiveBlock] = useState<null | BlockProps>(null);
+    const { setGroupBlocks } = useBoundStore(state => ({
+      setGroupBlocks: state.setGroupBlocks,
+    }));
+
+    function handleDragEnd(event: DragEndEvent) {
+      const { active, over } = event;
+      if (over && active.id !== over.id) {
+        const oldIndex = group.blocks.findIndex(
+          block => block.id === active.id
+        );
+        const newIndex = group.blocks.findIndex(block => block.id === over.id);
+        const newArray = arrayMove(group.blocks, oldIndex, newIndex);
+        setGroupBlocks(group.id, newArray);
+      }
+      setActiveBlock(null);
+    }
+    function handleDragStart(event: DragStartEvent) {
+      const block = group.blocks.find(block => block.id === event.active.id);
+      if (block) setActiveBlock(block);
+    }
+
     return (
       <div
         className={cn(
@@ -41,9 +77,23 @@ export const BlockGroupContainer = forwardRef(
           <Handle attributes={attributes} listeners={listeners} />
         </div>
         <div className="p-1 pb-2">
-          {group.blocks.map(block => {
-            return <BlockContainer key={block.id} block={block} />;
-          })}
+          <DndContext
+            collisionDetection={closestCenter}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              strategy={verticalListSortingStrategy}
+              items={group.blocks}
+            >
+              {group.blocks.map(block => {
+                return <SortableBlockContainer key={block.id} block={block} />;
+              })}
+            </SortableContext>
+            <DragOverlay>
+              {activeBlock ? <BlockContainer block={activeBlock} /> : null}
+            </DragOverlay>
+          </DndContext>
         </div>
       </div>
     );

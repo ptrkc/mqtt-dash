@@ -3,6 +3,11 @@ import { BlockButton } from '@/components/BlockButton';
 import { BlockRange } from '@/components/BlockRange';
 import { BlockLogger } from '@/components/BlockLogger';
 import { BlockSwitch } from '@/components/BlockSwitch';
+import { cn } from '@/utils/classnames';
+import { forwardRef, Ref } from 'react';
+import { DraggableAttributes } from '@dnd-kit/core';
+import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
+import { Handle } from './Handle';
 
 function BlockComponent({ block }: { block: BlockProps }) {
   switch (block.component) {
@@ -19,10 +24,37 @@ function BlockComponent({ block }: { block: BlockProps }) {
   }
 }
 
-export function BlockContainer({ block }: { block: BlockProps }) {
-  return (
-    <div className="flex flex-col p-2">
-      <BlockComponent block={block} />
-    </div>
-  );
-}
+// eslint-disable-next-line react/display-name
+export const BlockContainer = forwardRef(
+  (
+    {
+      block,
+      listeners,
+      attributes,
+      style,
+      isDragging,
+    }: {
+      block: BlockProps;
+      style?: React.CSSProperties;
+      attributes?: DraggableAttributes;
+      listeners?: SyntheticListenerMap;
+      isDragging?: boolean;
+    },
+    ref: Ref<HTMLDivElement>
+  ) => {
+    return (
+      <div
+        className={cn('flex flex-col p-2', isDragging && 'opacity-40')}
+        style={style}
+        ref={ref}
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-full">
+            <BlockComponent block={block} />
+          </div>
+          <Handle attributes={attributes} listeners={listeners} />
+        </div>
+      </div>
+    );
+  }
+);
