@@ -95,7 +95,7 @@ export const createBlockSlice: StateCreator<
       id: 1,
       blocks: [
         {
-          id: 2,
+          id: 1,
           component: 'range',
           topicToPub: 'range',
           name: 'pub',
@@ -104,7 +104,7 @@ export const createBlockSlice: StateCreator<
           localState: '100',
         },
         {
-          id: 3,
+          id: 2,
           component: 'range',
           topicToSub: 'range',
           name: 'sub',
@@ -112,7 +112,7 @@ export const createBlockSlice: StateCreator<
           max: 100,
         },
         {
-          id: 4,
+          id: 3,
           component: 'range',
           topicToPub: 'range',
           topicToSub: 'range',
@@ -127,20 +127,20 @@ export const createBlockSlice: StateCreator<
       id: 2,
       blocks: [
         {
-          id: 6,
+          id: 4,
           component: 'switch',
           topicToPub: 'switch',
           name: 'pub',
           localState: '0',
         },
         {
-          id: 7,
+          id: 5,
           component: 'switch',
           topicToSub: 'switch',
           name: 'sub',
         },
         {
-          id: 8,
+          id: 6,
           component: 'switch',
           topicToPub: 'switch',
           topicToSub: 'switch',
@@ -153,18 +153,23 @@ export const createBlockSlice: StateCreator<
       id: 3,
       blocks: [
         {
-          id: 1,
+          id: 7,
           component: 'button',
           topicToPub: 'topic',
           text: 'text',
           payload: 'payload',
         },
         {
-          id: 5,
+          id: 8,
           component: 'logger',
           types: ['error', 'connection', 'message', 'topic'],
         },
       ],
+    },
+    {
+      name: '4th',
+      id: 4,
+      blocks: [],
     },
   ],
   setBlockGroups: (blockGroups: BlockGroup[]) => {

@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { BlockProps } from '@/stores/blockSlice';
-import { BlockContainer } from './BlockContainer';
+import { BlockContainer } from '@/components/BlockContainer';
 
 export function SortableBlockContainer({ block }: { block: BlockProps }) {
   const {

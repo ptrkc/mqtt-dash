@@ -1,8 +1,8 @@
+import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { useBoundStore } from '@/hooks/useBoundStore';
-import { FormEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export function ConnectPage() {
   const navigate = useNavigate();

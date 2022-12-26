@@ -1,6 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { DraggableAttributes } from '@dnd-kit/core';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
-import { MoveIcon } from './Icons';
+import { EditorButton } from '@/components/EditorButton';
+import { MoveIcon } from '@/components/Icons';
 
 export function Handle({
   attributes,
@@ -10,12 +12,11 @@ export function Handle({
   listeners?: SyntheticListenerMap;
 }) {
   return (
-    <button
-      className="w-8 h-8 p-[6px] flex justify-center items-center cursor-grab hover:bg-gray-300 rounded-md transition-colors touch-none"
+    <EditorButton
       {...attributes}
       {...listeners}
-    >
-      <MoveIcon />
-    </button>
+      className="cursor-move touch-none"
+      icon={<MoveIcon />}
+    />
   );
 }

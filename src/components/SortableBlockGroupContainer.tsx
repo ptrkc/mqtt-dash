@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { BlockGroup } from '@/stores/blockSlice';
-import { BlockGroupContainer } from './BlockGroupContainer';
+import { BlockGroupContainer } from '@/components/BlockGroupContainer';
 
 export function SortableBlockGroupContainer({ group }: { group: BlockGroup }) {
   const {

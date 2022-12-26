@@ -1,8 +1,8 @@
 import create from 'zustand';
+import { persist } from 'zustand/middleware';
 import { ClientSlice, createClientSlice } from '@/stores/clientSlice';
 import { createBlockSlice, BlockSlice } from '@/stores/blockSlice';
 import { ConfigSlice, createConfigSlice } from '@/stores/configSlice';
-import { persist } from 'zustand/middleware';
 
 export type BoundState = ClientSlice & BlockSlice & ConfigSlice;
 export const useBoundStore = create<BoundState>()(

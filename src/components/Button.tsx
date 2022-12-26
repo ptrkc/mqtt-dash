@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { cn } from '@/utils/classnames';
-import { Spinner } from './Icons';
+import { Spinner } from '@/components/Icons';
 
 type ButtonType = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,

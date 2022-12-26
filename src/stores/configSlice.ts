@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
-import { BlockSlice } from './blockSlice';
-import { ClientSlice } from './clientSlice';
+import { BlockSlice } from '@/stores/blockSlice';
+import { ClientSlice } from '@/stores/clientSlice';
 
 export interface ConfigSlice {
   autoConnect: boolean;

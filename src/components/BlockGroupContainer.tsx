@@ -1,14 +1,9 @@
-import { BlockGroup, BlockProps } from '@/stores/blockSlice';
-import { BlockContainer } from './BlockContainer';
 import { forwardRef, Ref, useState } from 'react';
-import { Handle } from './Handle';
-import { DraggableAttributes } from '@dnd-kit/core';
-import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
-import { cn } from '@/utils/classnames';
 import {
-  DndContext,
   closestCenter,
+  DndContext,
   DragEndEvent,
+  DraggableAttributes,
   DragOverlay,
   DragStartEvent,
 } from '@dnd-kit/core';
@@ -17,8 +12,15 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
+import { BlockContainer } from '@/components/BlockContainer';
+import { EditorButton } from '@/components/EditorButton';
+import { Handle } from '@/components/Handle';
+import { PlusIcon } from '@/components/Icons';
+import { SortableBlockContainer } from '@/components/SortableBlockContainer';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
-import { SortableBlockContainer } from './SortableBlockContainer';
+import { BlockGroup, BlockProps } from '@/stores/blockSlice';
+import { cn } from '@/utils/classnames';
 
 const selector = (state: BoundState) => ({
   setGroupBlocks: state.setGroupBlocks,
@@ -74,9 +76,16 @@ export const BlockGroupContainer = forwardRef(
         style={style}
         ref={ref}
       >
-        <div className="flex justify-between bg-gray-100 px-2 py-1">
-          <h2>{group.name}</h2>
-          {editMode && <Handle attributes={attributes} listeners={listeners} />}
+        <div className="flex justify-between items-center bg-gray-100 px-2 py-1">
+          <h2 className="text-ellipsis whitespace-nowrap overflow-hidden">
+            {group.name}
+          </h2>
+          {editMode && (
+            <div className="flex gap-2">
+              <EditorButton icon={<PlusIcon />} />
+              <Handle attributes={attributes} listeners={listeners} />
+            </div>
+          )}
         </div>
         <div className="p-1 pb-2">
           <DndContext

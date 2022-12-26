@@ -1,9 +1,3 @@
-import { useBlock } from '@/hooks/useBlock';
-import {
-  RangeBlockPub,
-  RangeBlockPubSub,
-  RangeBlockSub,
-} from '@/stores/blockSlice';
 import {
   ChangeEventHandler,
   MouseEventHandler,
@@ -11,6 +5,12 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useBlock } from '@/hooks/useBlock';
+import {
+  RangeBlockPub,
+  RangeBlockPubSub,
+  RangeBlockSub,
+} from '@/stores/blockSlice';
 
 type onTouchOrMouseEndType = MouseEventHandler<HTMLInputElement> &
   TouchEventHandler<HTMLInputElement>;

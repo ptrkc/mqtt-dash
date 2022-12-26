@@ -1,6 +1,6 @@
-import shallow from 'zustand/shallow';
-import { useBoundStore } from './useBoundStore';
 import { useCallback, useEffect } from 'react';
+import shallow from 'zustand/shallow';
+import { useBoundStore } from '@/hooks/useBoundStore';
 
 export const useBlock = ({
   topicToPub,

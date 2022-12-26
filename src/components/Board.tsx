@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -13,7 +14,6 @@ import {
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { SortableBlockGroupContainer } from '@/components/SortableBlockGroupContainer';
 import { BlockGroupContainer } from '@/components/BlockGroupContainer';
-import { useState } from 'react';
 import { BlockGroup } from '@/stores/blockSlice';
 
 const blockGroupsSelector = (state: BoundState) => ({

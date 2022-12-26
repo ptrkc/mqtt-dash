@@ -1,6 +1,6 @@
+import { ChangeEventHandler } from 'react';
 import { IconButton } from '@/components/IconButton';
 import { MinusIcon, PlusIcon } from '@/components/Icons';
-import { ChangeEventHandler } from 'react';
 
 export function IntegerInput({
   value,

@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from 'react';
-import { LockIcon } from './Icons';
+import { LockIcon } from '@/components/Icons';
 
 export function Switch(props: InputHTMLAttributes<HTMLInputElement>) {
   return (

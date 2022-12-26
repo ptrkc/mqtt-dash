@@ -1,10 +1,10 @@
 import { UIEventHandler, useEffect, useMemo, useRef, useState } from 'react';
 import shallow from 'zustand/shallow';
+import { IconButton } from '@/components/IconButton';
+import { ArrowDownIcon } from '@/components/Icons';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { LoggerBlock } from '@/stores/blockSlice';
 import { cn } from '@/utils/classnames';
-import { IconButton } from '@/components/IconButton';
-import { ArrowDownIcon } from '@/components/Icons';
 
 const logsSelector = (state: BoundState) => state.logs;
 
