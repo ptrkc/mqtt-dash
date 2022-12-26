@@ -17,9 +17,13 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useBoundStore } from '@/hooks/useBoundStore';
+import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { SortableBlockContainer } from './SortableBlockContainer';
 
+const selector = (state: BoundState) => ({
+  setGroupBlocks: state.setGroupBlocks,
+  editMode: state.editMode,
+});
 // eslint-disable-next-line react/display-name
 export const BlockGroupContainer = forwardRef(
   (
@@ -41,9 +45,7 @@ export const BlockGroupContainer = forwardRef(
     ref: Ref<HTMLDivElement>
   ) => {
     const [activeBlock, setActiveBlock] = useState<null | BlockProps>(null);
-    const { setGroupBlocks } = useBoundStore(state => ({
-      setGroupBlocks: state.setGroupBlocks,
-    }));
+    const { setGroupBlocks, editMode } = useBoundStore(selector);
 
     function handleDragEnd(event: DragEndEvent) {
       const { active, over } = event;
@@ -74,7 +76,7 @@ export const BlockGroupContainer = forwardRef(
       >
         <div className="flex justify-between bg-gray-100 px-2 py-1">
           <h2>{group.name}</h2>
-          <Handle attributes={attributes} listeners={listeners} />
+          {editMode && <Handle attributes={attributes} listeners={listeners} />}
         </div>
         <div className="p-1 pb-2">
           <DndContext

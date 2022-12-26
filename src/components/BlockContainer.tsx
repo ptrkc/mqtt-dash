@@ -8,6 +8,7 @@ import { forwardRef, Ref } from 'react';
 import { DraggableAttributes } from '@dnd-kit/core';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import { Handle } from './Handle';
+import { useBoundStore, BoundState } from '@/hooks/useBoundStore';
 
 function BlockComponent({ block }: { block: BlockProps }) {
   switch (block.component) {
@@ -23,6 +24,8 @@ function BlockComponent({ block }: { block: BlockProps }) {
       return null;
   }
 }
+
+const editModeSelector = (state: BoundState) => state.editMode;
 
 // eslint-disable-next-line react/display-name
 export const BlockContainer = forwardRef(
@@ -42,6 +45,7 @@ export const BlockContainer = forwardRef(
     },
     ref: Ref<HTMLDivElement>
   ) => {
+    const editMode = useBoundStore(editModeSelector);
     return (
       <div
         className={cn('flex flex-col p-2', isDragging && 'opacity-40')}
@@ -52,7 +56,7 @@ export const BlockContainer = forwardRef(
           <div className="w-full">
             <BlockComponent block={block} />
           </div>
-          <Handle attributes={attributes} listeners={listeners} />
+          {editMode && <Handle attributes={attributes} listeners={listeners} />}
         </div>
       </div>
     );

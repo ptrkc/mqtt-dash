@@ -5,13 +5,18 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Board } from '@/components/Board';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
+import { Switch } from '@/components/Switch';
+
+const selector = (state: BoundState) => ({
+  editMode: state.editMode,
+  toggleEdit: state.toggleEdit,
+  publish: state.publish,
+  subscribe: state.subscribe,
+});
 
 function HomeTop() {
-  const { publish, subscribe } = useBoundStore(
-    state => ({
-      publish: state.publish,
-      subscribe: state.subscribe,
-    }),
+  const { publish, subscribe, editMode, toggleEdit } = useBoundStore(
+    selector,
     shallow
   );
   const [payload, setPayload] = useState('');
@@ -39,6 +44,10 @@ function HomeTop() {
             pub to &quot;{topic}&quot;
           </Button>
         </div>
+        <label className="flex flex-col gap-2">
+          Toggle Edit Mode:
+          <Switch checked={editMode} onChange={toggleEdit} />
+        </label>
       </div>
     </div>
   );
