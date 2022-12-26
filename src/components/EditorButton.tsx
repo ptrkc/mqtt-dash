@@ -1,13 +1,15 @@
+import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react';
 import { cn } from '@/utils/classnames';
-import { ReactNode } from 'react';
 
 export function EditorButton({
   icon,
   className,
   ...rest
-}: {
+}: DetailedHTMLProps<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> & {
   icon: ReactNode;
-  className?: string;
 }) {
   return (
     <button

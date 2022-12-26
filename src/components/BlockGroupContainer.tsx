@@ -13,10 +13,9 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
+import { AddBlockButton } from '@/components/AddBlockButton';
 import { BlockContainer } from '@/components/BlockContainer';
-import { EditorButton } from '@/components/EditorButton';
 import { Handle } from '@/components/Handle';
-import { PlusIcon } from '@/components/Icons';
 import { SortableBlockContainer } from '@/components/SortableBlockContainer';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { BlockGroup, BlockProps } from '@/stores/blockSlice';
@@ -82,7 +81,7 @@ export const BlockGroupContainer = forwardRef(
           </h2>
           {editMode && (
             <div className="flex gap-2">
-              <EditorButton icon={<PlusIcon />} />
+              <AddBlockButton groupId={group.id} />
               <Handle attributes={attributes} listeners={listeners} />
             </div>
           )}

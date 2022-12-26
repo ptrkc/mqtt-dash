@@ -44,7 +44,7 @@ export function ConnectPage() {
     <form
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={onSubmit}
-      className="h-screen mx-auto max-w-4xl flex flex-col items-center justify-center gap-3"
+      className=" h-[80vh] mx-auto max-w-4xl flex flex-col items-center justify-center gap-3"
     >
       <label className="flex flex-col gap-2">
         <span>MQTT WebSocket Server:</span>
