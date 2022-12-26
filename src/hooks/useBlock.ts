@@ -39,10 +39,13 @@ export const useBlock = ({
   }, []);
 
   const publish = (payload: string) => {
+    // topicToPub + topicToSub=> pubs and subscribes, no local state
+    // topicToPub, no blockId=> pubs, no local state
+    // topicToPub + blockId=> pubs and saves local state
     if (topicToPub) {
-      if (topicToSub) {
+      if (topicToSub || blockId === undefined) {
         void originalPublish({ topic: topicToPub, payload });
-      } else if (!topicToSub && blockId !== undefined) {
+      } else {
         updateLocalState(blockId, payload);
         void originalPublish({ topic: topicToPub, payload });
       }

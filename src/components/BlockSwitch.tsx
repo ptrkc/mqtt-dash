@@ -33,9 +33,7 @@ export function BlockSwitch({
   return (
     <div className="flex justify-between items-center">
       <span>{name}</span>
-      <div>
-        <Switch checked={isOn} onChange={onChange} disabled={!topicToPub} />
-      </div>
+      <Switch checked={isOn} onChange={onChange} disabled={!topicToPub} />
     </div>
   );
 }
