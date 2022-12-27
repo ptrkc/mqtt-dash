@@ -1,6 +1,7 @@
 declare module 'u8-mqtt/esm/web/v4.mjs' {
   export class MQTTv4 {
     with_websock: (url: string) => this;
+    on_reconnect: () => void;
     connect: (connectOptions: {
       client_id: string | string[];
       will: { topic: string; payload: string };

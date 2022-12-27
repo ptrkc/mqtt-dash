@@ -46,23 +46,28 @@ export const createClientSlice: StateCreator<
   connect: async (url: string) => {
     const log = get().log;
     const client = get().client;
-    log({ type: 'connection', message: `trying to connect to ${url}` });
+    log({ type: 'connection', message: `Trying to connect to ${url}` });
     client.with_websock(url);
-    try {
-      set({ status: 'connecting' });
-      await client.connect({
-        client_id: ['mqtt-dash--', '--user'],
-        will: {
-          topic: 'mqtt-dash-test',
-          payload: 'gone!',
-        },
-      });
-      log({ type: 'connection', message: `connected to ${url}` });
-      set({ status: 'connected' });
-    } catch (error) {
-      log({ type: 'error', message: JSON.stringify(error) });
+    client.on_reconnect = () => {
+      if (get().status === 'connecting') {
+        set({ status: 'error' });
+        log({ type: 'error', message: `Couldn't connect to ${url}` });
+      } else {
+        set({ status: 'disconnected' });
+        log({ type: 'connection', message: `Disconnected from ${url}` });
+      }
       set({ status: 'error' });
-    }
+    };
+    set({ status: 'connecting' });
+    await client.connect({
+      client_id: ['mqtt-dash--', '--user'],
+      will: {
+        topic: 'mqtt-dash-test',
+        payload: 'gone!',
+      },
+    });
+    log({ type: 'connection', message: `Connected to ${url}` });
+    set({ status: 'connected' });
   },
   publish: async (options: { topic: string; payload: string }) => {
     const log = get().log;
@@ -72,7 +77,7 @@ export const createClientSlice: StateCreator<
       log({
         type: 'message',
         topic: options.topic,
-        message: `published: ${options.payload}`,
+        message: `Published: ${options.payload}`,
       });
     } catch (error) {
       log({ type: 'error', message: JSON.stringify(error) });
@@ -84,19 +89,19 @@ export const createClientSlice: StateCreator<
     const subbedTopics = get().subbedTopics;
     if (['subscribed', 'subscribing'].includes(subbedTopics[topic])) return;
 
-    log({ type: 'topic', topic, message: `subscribing to: ${topic}` });
+    log({ type: 'topic', topic, message: `Subscribing to: ${topic}` });
     set({ subbedTopics: { ...subbedTopics, [topic]: 'subscribing' } });
     try {
       await client.subscribe_topic(topic, pkt => {
         log({
           type: 'message',
           topic: topic,
-          message: `received: ${pkt.utf8()}`,
+          message: `Received: ${pkt.utf8()}`,
         });
         set({ lastMessage: { ...get().lastMessage, [topic]: pkt.utf8() } });
       });
       set({ subbedTopics: { ...get().subbedTopics, [topic]: 'subscribed' } });
-      log({ type: 'topic', topic, message: `subscribed to: ${topic}` });
+      log({ type: 'topic', topic, message: `Subscribed to: ${topic}` });
     } catch (error) {
       set({ subbedTopics: { ...get().subbedTopics, [topic]: 'error' } });
       log({ type: 'error', message: JSON.stringify(error) });
@@ -110,7 +115,7 @@ export const createClientSlice: StateCreator<
       log({
         type: 'topic',
         topic: topic,
-        message: `unsubscribed from: ${topic}`,
+        message: `Unsubscribed from: ${topic}`,
       });
     } catch (error) {
       log({ type: 'error', message: JSON.stringify(error) });

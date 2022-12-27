@@ -57,6 +57,11 @@ export function ConnectPage() {
           required
         />
       </label>
+      {status === 'error' && (
+        <span className="text-red-600">
+          Couldn&apos;t connect to the server, check the URL.
+        </span>
+      )}
       <label className="flex gap-2">
         <input
           type="checkbox"
