@@ -19,7 +19,6 @@ export function ConnectPage() {
   const [autoConnectCheck, setAutoConnectCheck] = useState(autoConnect);
 
   useEffect(() => {
-    localStorage.clear(); //TODO: REMOVE
     if (autoConnect && brokerUrl) {
       connect(url)
         .then(() => navigate('/home'))

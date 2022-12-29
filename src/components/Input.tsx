@@ -1,7 +1,7 @@
 import { cn } from '@/utils/classnames';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  value: string | number;
+  value?: string | number;
 }
 
 export function Input({ className, ...rest }: InputProps) {

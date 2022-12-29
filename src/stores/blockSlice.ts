@@ -1,10 +1,18 @@
+import { generateId } from '@/utils/generateId';
 import { StateCreator } from 'zustand';
 import { ClientSlice, LogType } from './clientSlice';
 import { ConfigSlice } from './configSlice';
 
+export enum BlockComponent {
+  button = 'button',
+  range = 'range',
+  logger = 'logger',
+  switch = 'switch',
+}
+
 interface BaseBlock {
   id: number;
-  component: 'button' | 'range' | 'logger' | 'switch';
+  component: keyof typeof BlockComponent;
 }
 export interface LoggerBlock extends BaseBlock {
   component: 'logger';
@@ -78,7 +86,7 @@ export interface BlockSlice {
   blockGroups: BlockGroup[];
   setBlockGroups: (blockGroups: BlockGroup[]) => void;
   setGroupBlocks: (groupId: number, blocks: BlockProps[]) => void;
-  create: (component: string) => Promise<void>;
+  create: (groupId: number, newBlock: BlockProps) => void;
   delete: (componentId: string) => Promise<void>;
   updateLocalState: (blockId: number, value: string) => void;
 }
@@ -181,8 +189,11 @@ export const createBlockSlice: StateCreator<
     blockGroups[groupIndex].blocks = blocks;
     return set({ blockGroups });
   },
-  create: async (url: string) => {
-    console.log(url);
+  create: (groupId: number, newBlock: BlockProps) => {
+    const blockGroups = get().blockGroups;
+    const group = blockGroups.find(group => group.id === groupId);
+    group?.blocks.push({ ...newBlock, id: generateId() });
+    return set({ blockGroups });
   },
   delete: async (componentId: string) => {
     console.log(componentId);
