@@ -86,7 +86,7 @@ export interface BlockSlice {
   blockGroups: BlockGroup[];
   setBlockGroups: (blockGroups: BlockGroup[]) => void;
   setGroupBlocks: (groupId: number, blocks: BlockProps[]) => void;
-  create: (groupId: number, newBlock: BlockProps) => void;
+  create: (groupId: number, newBlock: Omit<BlockProps, 'id'>) => void;
   delete: (componentId: string) => Promise<void>;
   updateLocalState: (blockId: number, value: string) => void;
 }
@@ -189,7 +189,7 @@ export const createBlockSlice: StateCreator<
     blockGroups[groupIndex].blocks = blocks;
     return set({ blockGroups });
   },
-  create: (groupId: number, newBlock: BlockProps) => {
+  create: (groupId: number, newBlock: Omit<BlockProps, 'id'>) => {
     const blockGroups = get().blockGroups;
     const group = blockGroups.find(group => group.id === groupId);
     group?.blocks.push({ ...newBlock, id: generateId() });

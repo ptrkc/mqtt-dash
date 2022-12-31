@@ -1,12 +1,26 @@
 import { ChangeEventHandler, FormEventHandler } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Select } from '@/components/Select';
 import { useBoundStore } from '@/hooks/useBoundStore';
 import { BlockComponent } from '@/stores/blockSlice';
 
+interface FormInputs {
+  groupId: string;
+  component: string;
+  text: string;
+  payload: string;
+  topicToPub: string;
+  topicToSub: string;
+  max: string;
+  min: string;
+  onValue: string;
+  offValue: string;
+}
+
 export function AddBlockPage() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const groupId = Number(searchParams.get('groupId'));
   const { blockGroups, create } = useBoundStore(state => ({
@@ -20,10 +34,12 @@ export function AddBlockPage() {
   const onSubmit: FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log(formData);
-    const { groupId, ...block } = Object.fromEntries(formData);
+    const { groupId, ...block } = Object.fromEntries(
+      formData
+    ) as unknown as FormInputs;
     console.log(groupId, block);
     create(Number(groupId), block);
+    navigate('/home');
   };
 
   return (
