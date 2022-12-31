@@ -9,6 +9,7 @@ import { Handle } from '@/components/Handle';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { BlockProps } from '@/stores/blockSlice';
 import { cn } from '@/utils/classnames';
+import { DeleteBlockButtonModal } from './DeleteBlockButtonModal';
 
 function BlockComponent({ block }: { block: BlockProps }) {
   switch (block.component) {
@@ -27,7 +28,6 @@ function BlockComponent({ block }: { block: BlockProps }) {
 
 const editModeSelector = (state: BoundState) => state.editMode;
 
-// eslint-disable-next-line react/display-name
 export const BlockContainer = forwardRef(
   (
     {
@@ -56,9 +56,16 @@ export const BlockContainer = forwardRef(
           <div className="w-full">
             <BlockComponent block={block} />
           </div>
-          {editMode && <Handle attributes={attributes} listeners={listeners} />}
+          {editMode && (
+            <div className="flex gap-2">
+              <DeleteBlockButtonModal blockId={block.id} />
+              <Handle attributes={attributes} listeners={listeners} />
+            </div>
+          )}
         </div>
       </div>
     );
   }
 );
+
+BlockContainer.displayName = 'BlockContainer';

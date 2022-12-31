@@ -86,8 +86,8 @@ export interface BlockSlice {
   blockGroups: BlockGroup[];
   setBlockGroups: (blockGroups: BlockGroup[]) => void;
   setGroupBlocks: (groupId: number, blocks: BlockProps[]) => void;
-  create: (groupId: number, newBlock: Omit<BlockProps, 'id'>) => void;
-  delete: (componentId: string) => Promise<void>;
+  addBlock: (groupId: number, newBlock: Omit<BlockProps, 'id'>) => void;
+  deleteBlock: (blockId: number) => void;
   updateLocalState: (blockId: number, value: string) => void;
 }
 
@@ -189,14 +189,20 @@ export const createBlockSlice: StateCreator<
     blockGroups[groupIndex].blocks = blocks;
     return set({ blockGroups });
   },
-  create: (groupId: number, newBlock: Omit<BlockProps, 'id'>) => {
+  addBlock: (groupId: number, newBlock: Omit<BlockProps, 'id'>) => {
     const blockGroups = get().blockGroups;
     const group = blockGroups.find(group => group.id === groupId);
     group?.blocks.push({ ...newBlock, id: generateId() });
     return set({ blockGroups });
   },
-  delete: async (componentId: string) => {
-    console.log(componentId);
+  deleteBlock: (blockId: number) => {
+    const blockGroups = get().blockGroups;
+    const filteredBlockGroups = blockGroups.map(group => {
+      const newBlocks = group.blocks.filter(block => block.id !== blockId);
+      return { ...group, blocks: newBlocks };
+    });
+
+    return set({ blockGroups: filteredBlockGroups });
   },
   updateLocalState: (blockId: number, value: string) => {
     const groups = get().blockGroups;

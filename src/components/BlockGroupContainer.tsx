@@ -25,7 +25,7 @@ const selector = (state: BoundState) => ({
   setGroupBlocks: state.setGroupBlocks,
   editMode: state.editMode,
 });
-// eslint-disable-next-line react/display-name
+
 export const BlockGroupContainer = forwardRef(
   (
     {
@@ -109,3 +109,5 @@ export const BlockGroupContainer = forwardRef(
     );
   }
 );
+
+BlockGroupContainer.displayName = 'BlockGroupContainer';

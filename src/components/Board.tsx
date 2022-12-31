@@ -24,7 +24,6 @@ const blockGroupsSelector = (state: BoundState) => ({
 export function Board() {
   const [activeGroup, setActiveGroup] = useState<null | BlockGroup>(null);
   const { blockGroups, setBlockGroups } = useBoundStore(blockGroupsSelector);
-  console.log(blockGroups);
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (over && active.id !== over.id) {

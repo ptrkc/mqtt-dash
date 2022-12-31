@@ -23,9 +23,9 @@ export function AddBlockPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const groupId = Number(searchParams.get('groupId'));
-  const { blockGroups, create } = useBoundStore(state => ({
+  const { blockGroups, addBlock } = useBoundStore(state => ({
     blockGroups: state.blockGroups,
-    create: state.create,
+    addBlock: state.addBlock,
   }));
   const onGroupChange: ChangeEventHandler<HTMLSelectElement> = event => {
     setSearchParams({ groupId: event.target.value });
@@ -38,7 +38,7 @@ export function AddBlockPage() {
       formData
     ) as unknown as FormInputs;
     console.log(groupId, block);
-    create(Number(groupId), block);
+    addBlock(Number(groupId), block);
     navigate('/home');
   };
 
@@ -102,7 +102,7 @@ export function AddBlockPage() {
         offValue?
         <Input name="offValue" type="text" />
       </label>
-      <Button>Create Block</Button>
+      <Button>Add Block</Button>
     </form>
   );
 }
