@@ -14,7 +14,6 @@ export const useBoundStore = create<BoundState>()(
     }),
     {
       name: 'configStorage',
-      getStorage: () => localStorage,
       partialize: state =>
         Object.fromEntries(
           Object.entries(state).filter(
