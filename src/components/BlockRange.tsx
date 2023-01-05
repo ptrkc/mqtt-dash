@@ -16,15 +16,7 @@ type onTouchOrMouseEndType = MouseEventHandler<HTMLInputElement> &
   TouchEventHandler<HTMLInputElement>;
 
 export function BlockRange({
-  block: {
-    topicToSub,
-    topicToPub,
-    name = 'Range',
-    min = 0,
-    max = 100,
-    localState,
-    id,
-  },
+  block: { topicToSub, topicToPub, text, min = 0, max = 100, localState, id },
 }: {
   block: RangeBlockPub | RangeBlockSub | RangeBlockPubSub;
 }) {
@@ -51,7 +43,7 @@ export function BlockRange({
   };
   return (
     <div className="flex flex-col justify-start items-start">
-      <span>{name}</span>
+      <span>{text}</span>
       <input
         onMouseUp={onTouchOrMouseEnd}
         onTouchEnd={onTouchOrMouseEnd}

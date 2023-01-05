@@ -46,6 +46,8 @@ export const createClientSlice: StateCreator<
   connect: async (url: string) => {
     const log = get().log;
     const client = get().client;
+    if (get().status === 'connecting') return;
+
     log({ type: 'connection', message: `Trying to connect to ${url}` });
     client.with_websock(url);
     client.on_reconnect = () => {

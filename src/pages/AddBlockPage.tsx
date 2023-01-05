@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FormEventHandler } from 'react';
+import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -8,7 +8,7 @@ import { BlockComponent } from '@/stores/blockSlice';
 
 interface FormInputs {
   groupId: string;
-  component: string;
+  component: BlockComponent;
   text: string;
   payload: string;
   topicToPub: string;
@@ -19,7 +19,21 @@ interface FormInputs {
   offValue: string;
 }
 
+// const BlockFormOptions = {
+// logger: {
+//   selects: {
+//     types: ['topic','message','connection','error'],
+//   }
+// },
+//   button: ['topicToPub', 'text', 'payload'],
+//   range: ['name', 'topicToSub', 'topicToPub', 'min', 'max'],
+//   switch: ['name', 'topicToSub', 'topicToPub'],
+// };
+
 export function AddBlockPage() {
+  const [selectedBlock, setSelectedBlock] = useState<BlockComponent>(
+    BlockComponent.Button
+  );
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const groupId = Number(searchParams.get('groupId'));
@@ -42,6 +56,12 @@ export function AddBlockPage() {
     navigate('/home');
   };
 
+  const onBlockSelect: ChangeEventHandler<HTMLSelectElement> = event => {
+    const value = event.target.value as BlockComponent;
+    console.log(event.target.value);
+    setSelectedBlock(value);
+  };
+
   return (
     <form
       onSubmit={onSubmit}
@@ -60,18 +80,20 @@ export function AddBlockPage() {
       </label>
       <label>
         Block:
-        <Select name="component">
-          {Object.keys(BlockComponent).map(component => {
-            return (
-              <option key={component} value={component}>
-                {component}
-              </option>
-            );
-          })}
+        <Select name="component" value={selectedBlock} onChange={onBlockSelect}>
+          {(Object.keys(BlockComponent) as (keyof typeof BlockComponent)[]).map(
+            component => {
+              return (
+                <option key={component} value={BlockComponent[component]}>
+                  {component}
+                </option>
+              );
+            }
+          )}
         </Select>
       </label>{' '}
       <label>
-        label?
+        text?
         <Input name="text" type="text" />
       </label>{' '}
       <label>

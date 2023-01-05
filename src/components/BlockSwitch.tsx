@@ -8,7 +8,7 @@ import {
 } from '@/stores/blockSlice';
 
 export function BlockSwitch({
-  block: { topicToSub, topicToPub, localState, name = 'Switch', id },
+  block: { topicToSub, topicToPub, localState, text, id },
 }: {
   block: SwitchBlockPub | SwitchBlockSub | SwitchBlockPubSub;
 }) {
@@ -32,7 +32,7 @@ export function BlockSwitch({
 
   return (
     <div className="flex justify-between items-center">
-      <span>{name}</span>
+      <span>{text}</span>
       <Switch checked={isOn} onChange={onChange} disabled={!topicToPub} />
     </div>
   );

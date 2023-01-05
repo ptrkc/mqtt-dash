@@ -4,30 +4,30 @@ import { ClientSlice, LogType } from './clientSlice';
 import { ConfigSlice } from './configSlice';
 
 export enum BlockComponent {
-  button = 'button',
-  range = 'range',
-  logger = 'logger',
-  switch = 'switch',
+  Button = 'button',
+  Range = 'range',
+  Logger = 'logger',
+  Switch = 'switch',
 }
 
 interface BaseBlock {
   id: number;
-  component: keyof typeof BlockComponent;
+  component: BlockComponent;
 }
 export interface LoggerBlock extends BaseBlock {
-  component: 'logger';
+  component: BlockComponent.Logger;
   types: LogType[];
 }
 
 export interface ButtonBlockPub extends BaseBlock {
-  component: 'button';
+  component: BlockComponent.Button;
   topicToPub: string;
   text: string;
   payload: string;
 }
 interface RangeBlockBase extends BaseBlock {
-  component: 'range';
-  name?: string;
+  component: BlockComponent.Range;
+  text: string;
   min?: number;
   max?: number;
 }
@@ -48,8 +48,8 @@ export interface RangeBlockPubSub extends RangeBlockBase {
 }
 
 interface SwitchBlockBase extends BaseBlock {
-  component: 'switch';
-  name?: string;
+  component: BlockComponent.Switch;
+  text?: string;
 }
 export interface SwitchBlockPub extends SwitchBlockBase {
   topicToSub?: never;
@@ -104,27 +104,27 @@ export const createBlockSlice: StateCreator<
       blocks: [
         {
           id: 1,
-          component: 'range',
-          topicToPub: 'range',
-          name: 'pub',
+          component: BlockComponent.Range,
+          topicToPub: BlockComponent.Range,
+          text: 'pub',
           min: 0,
           max: 100,
           localState: '100',
         },
         {
           id: 2,
-          component: 'range',
-          topicToSub: 'range',
-          name: 'sub',
+          component: BlockComponent.Range,
+          topicToSub: BlockComponent.Range,
+          text: 'sub',
           min: 0,
           max: 100,
         },
         {
           id: 3,
-          component: 'range',
-          topicToPub: 'range',
-          topicToSub: 'range',
-          name: 'pub-sub',
+          component: BlockComponent.Range,
+          topicToPub: BlockComponent.Range,
+          topicToSub: BlockComponent.Range,
+          text: 'pub-sub',
           min: 0,
           max: 100,
         },
@@ -136,23 +136,23 @@ export const createBlockSlice: StateCreator<
       blocks: [
         {
           id: 4,
-          component: 'switch',
-          topicToPub: 'switch',
-          name: 'pub',
+          component: BlockComponent.Switch,
+          topicToPub: BlockComponent.Switch,
+          text: 'pub',
           localState: '0',
         },
         {
           id: 5,
-          component: 'switch',
-          topicToSub: 'switch',
-          name: 'sub',
+          component: BlockComponent.Switch,
+          topicToSub: BlockComponent.Switch,
+          text: 'sub',
         },
         {
           id: 6,
-          component: 'switch',
-          topicToPub: 'switch',
-          topicToSub: 'switch',
-          name: 'pub-sub',
+          component: BlockComponent.Switch,
+          topicToPub: BlockComponent.Switch,
+          topicToSub: BlockComponent.Switch,
+          text: 'pub-sub',
         },
       ],
     },
@@ -162,14 +162,14 @@ export const createBlockSlice: StateCreator<
       blocks: [
         {
           id: 7,
-          component: 'button',
+          component: BlockComponent.Button,
           topicToPub: 'topic',
           text: 'text',
           payload: 'payload',
         },
         {
           id: 8,
-          component: 'logger',
+          component: BlockComponent.Logger,
           types: ['error', 'connection', 'message', 'topic'],
         },
       ],
