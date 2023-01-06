@@ -20,9 +20,8 @@ export function ConnectPage() {
 
   useEffect(() => {
     if (autoConnect && brokerUrl) {
-      connect(url)
-        .then(() => navigate('/home'))
-        .catch(error => console.log(error));
+      connect(url);
+      navigate('/home');
     }
   }, []);
 
@@ -33,9 +32,9 @@ export function ConnectPage() {
     }
   }, [status]);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await connect(url);
+    connect(url);
   };
 
   const isLoading = status === 'connecting';
