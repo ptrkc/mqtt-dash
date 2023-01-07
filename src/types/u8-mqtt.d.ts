@@ -1,7 +1,7 @@
 declare module 'u8-mqtt/esm/web/v4.mjs' {
   export class MQTTv4 {
     with_websock: (url: string) => this;
-    with_autoreconnect: (milliseconds: number) => void;
+    with_autoreconnect: (milliseconds?: number) => void;
     on_reconnect: () => void;
     with_live: (on_live: () => Promise<void>) => void;
     on_disconnect: (client: MQTTv4, intentional: boolean) => void;
@@ -9,7 +9,7 @@ declare module 'u8-mqtt/esm/web/v4.mjs' {
       client_id: string | string[];
       will: { topic: string; payload: string };
     }) => Promise<this>;
-    disconnect: () => Promise<void>;
+    disconnect: () => void;
     publish: ({
       topic,
       payload,

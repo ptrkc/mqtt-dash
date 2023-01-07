@@ -12,15 +12,26 @@ const selector = (state: BoundState) => ({
   toggleEdit: state.toggleEdit,
   publish: state.publish,
   subscribe: state.subscribe,
+  disconnect: state.disconnect,
+  setConfig: state.setConfig,
 });
 
 function HomeTop() {
-  const { publish, subscribe, editMode, toggleEdit } = useBoundStore(
-    selector,
-    shallow
-  );
+  const {
+    publish,
+    subscribe,
+    editMode,
+    toggleEdit,
+    disconnect: clientDisconnect,
+    setConfig,
+  } = useBoundStore(selector, shallow);
   const [payload, setPayload] = useState('');
   const [topic, setTopic] = useState('mqtt-dash-test');
+
+  const disconnect = () => {
+    setConfig({ autoConnect: false });
+    clientDisconnect();
+  };
 
   return (
     <div className="flex flex-col mx-auto justify-center items-center gap-3 p-2">
@@ -48,6 +59,9 @@ function HomeTop() {
           Toggle Edit Mode:
           <Switch checked={editMode} onChange={toggleEdit} />
         </label>
+        <div>
+          <Button onClick={disconnect}>Disconnect</Button>
+        </div>
       </div>
     </div>
   );

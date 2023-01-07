@@ -4,7 +4,7 @@ import { BlockSlice } from '@/stores/blockSlice';
 import { generateId } from '@/utils/generateId';
 import { ConfigSlice } from '@/stores/configSlice';
 
-type MQTTStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
+type MQTTStatus = 'connected' | 'connecting' | 'disconnected' | 'error';
 export type LogType = 'topic' | 'message' | 'connection' | 'error';
 
 type SubscriptionStatus =
@@ -27,7 +27,7 @@ export interface ClientSlice {
   }[];
   log: (log: { type: LogType; topic?: string; message: string }) => void;
   connect: (url: string) => void;
-  disconnect: () => Promise<void>;
+  disconnect: () => void;
   publish: (options: { topic: string; payload: string }) => Promise<void>;
   subscribe: (topic: string) => Promise<void>;
   unsubscribe: (topic: string) => Promise<void>;
@@ -51,13 +51,21 @@ export const createClientSlice: StateCreator<
   connect: (url: string) => {
     const log = get().log;
     const client = get().client;
+    const status = get().status;
     client.with_websock(url);
-    client.with_autoreconnect(2000);
+    client.with_autoreconnect();
+    client.on_disconnect = (currentClient: MQTTv4, intentional: boolean) => {
+      log({ type: 'connection', message: `Disconnected from ${url}` });
+      if (!intentional) {
+        return currentClient.on_reconnect();
+      } else {
+        set({ status: 'disconnected' });
+      }
+    };
     client.with_live(async () => {
-      set({ status: 'connecting' });
-      log({ type: 'connection', message: `Connecting to ${url}` });
-      console.log('on_live, connecting...');
-      if (['disconnected', 'connecting'].includes(get().status)) {
+      if (['disconnected', 'connecting'].includes(status)) {
+        set({ status: 'connecting' });
+        log({ type: 'connection', message: `Connecting to ${url}` });
         await client.connect({
           client_id: ['mqtt-dash--', '--user'],
           will: {
@@ -67,21 +75,12 @@ export const createClientSlice: StateCreator<
         });
         log({ type: 'connection', message: `Connected to ${url}` });
         set({ status: 'connected' });
-        console.log('on_live, connected');
       }
     });
-    client.on_disconnect = (currentClient: MQTTv4, intentional: boolean) => {
-      log({ type: 'connection', message: `Disconnected from ${url}` });
-      set({ status: 'connecting' });
-      if (!intentional) {
-        log({ type: 'connection', message: `Reconnecting to ${url}` });
-        return currentClient.on_reconnect();
-      }
-    };
   },
-  disconnect: async () => {
+  disconnect: () => {
     const client = get().client;
-    await client.disconnect();
+    client.disconnect();
   },
   publish: async (options: { topic: string; payload: string }) => {
     const log = get().log;

@@ -18,12 +18,12 @@ export function ConnectPage() {
   const [url, setUrl] = useState(brokerUrl); //ws://192.168.0.3:9001
   const [autoConnectCheck, setAutoConnectCheck] = useState(autoConnect);
 
-  useEffect(() => {
-    if (autoConnect && brokerUrl) {
-      connect(url);
-      navigate('/home');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (autoConnect && brokerUrl) {
+  //     connect(url);
+  //     navigate('/home');
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (status === 'connected') {
@@ -68,7 +68,17 @@ export function ConnectPage() {
         />
         <span>Keep connected</span>
       </label>
-      <Button isLoading={isLoading}>Connect</Button>
+      <Button type="submit" isLoading={isLoading}>
+        Connect
+      </Button>
+      <Button
+        type="button"
+        onClick={() => window.location.reload()}
+        color="red"
+        disabled={!isLoading}
+      >
+        Cancel
+      </Button>
     </form>
   );
 }
