@@ -80,7 +80,7 @@ export const createClientSlice: StateCreator<
   disconnect: () => {
     const client = get().client;
     client.disconnect();
-    set({ client: mqtt_v4() });
+    set({ client: mqtt_v4(), subbedTopics: {} });
   },
   publish: async (options: { topic: string; payload: string }) => {
     const log = get().log;
