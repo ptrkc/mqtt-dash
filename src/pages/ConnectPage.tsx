@@ -1,29 +1,37 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import shallow from 'zustand/shallow';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
-import { useBoundStore } from '@/hooks/useBoundStore';
+import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
+
+const selector = (state: BoundState) => ({
+  client: state.client,
+  connect: state.connect,
+  status: state.status,
+  brokerUrl: state.brokerUrl,
+  setConfig: state.setConfig,
+  autoConnect: state.autoConnect,
+});
 
 export function ConnectPage() {
   const navigate = useNavigate();
   const { connect, status, brokerUrl, setConfig, autoConnect } = useBoundStore(
-    state => ({
-      connect: state.connect,
-      status: state.status,
-      brokerUrl: state.brokerUrl,
-      setConfig: state.setConfig,
-      autoConnect: state.autoConnect,
-    })
+    selector,
+    shallow
   );
-  const [url, setUrl] = useState(brokerUrl); //ws://192.168.0.3:9001
+  const [url, setUrl] = useState(brokerUrl);
   const [autoConnectCheck, setAutoConnectCheck] = useState(autoConnect);
 
-  // useEffect(() => {
-  //   if (autoConnect && brokerUrl) {
-  //     connect(url);
-  //     navigate('/home');
-  //   }
-  // }, []);
+  useEffect(() => {
+    const connectIfNecessary = async () => {
+      if (autoConnect && brokerUrl) {
+        await connect(url);
+      }
+    };
+
+    connectIfNecessary().catch(error => console.log(error));
+  }, []);
 
   useEffect(() => {
     if (status === 'connected') {
@@ -32,9 +40,9 @@ export function ConnectPage() {
     }
   }, [status]);
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    connect(url);
+    await connect(url);
   };
 
   const isLoading = status === 'connecting';
