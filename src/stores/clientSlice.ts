@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { mqtt_v4, MQTTv4 } from 'u8-mqtt/esm/web/v4.mjs';
+import { mqtt_v4, MQTTv4 } from 'u8-mqtt/esm/web/v4.min.js';
 import { BlockSlice } from '@/stores/blockSlice';
 import { generateId } from '@/utils/generateId';
 import { ConfigSlice } from '@/stores/configSlice';

@@ -17,10 +17,10 @@ export function DeleteBlockButtonModal({ blockId }: { blockId: number }) {
         <AlertDialog.Overlay className="bg-black/50 fixed top-0 bottom-0 right-0 left-0" />
         <AlertDialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded-lg flex flex-col gap-4">
           <AlertDialog.Title>Are you sure?</AlertDialog.Title>
-          <AlertDialog.Description className="AlertDialogDescription">
+          <AlertDialog.Description>
             This action will permanently delete this Block.
           </AlertDialog.Description>
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end gap-4 p-1">
             <AlertDialog.Cancel asChild>
               <Button>Cancel</Button>
             </AlertDialog.Cancel>

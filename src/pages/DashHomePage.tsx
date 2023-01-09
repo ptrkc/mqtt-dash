@@ -6,6 +6,7 @@ import { Input } from '@/components/Input';
 import { Board } from '@/components/Board';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { Switch } from '@/components/Switch';
+import { AddGroupButtonModal } from '@/components/AddGroupButtonModal';
 
 const selector = (state: BoundState) => ({
   editMode: state.editMode,
@@ -61,6 +62,7 @@ function HomeTop() {
         </label>
         <div>
           <Button onClick={disconnect}>Disconnect</Button>
+          <AddGroupButtonModal />
         </div>
       </div>
     </div>

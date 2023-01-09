@@ -95,6 +95,7 @@ export interface BlockGroup {
 }
 export interface BlockSlice {
   blockGroups: BlockGroup[];
+  addGroup: (groupName: string) => void;
   setBlockGroups: (blockGroups: BlockGroup[]) => void;
   setGroupBlocks: (groupId: number, blocks: BlockProps[]) => void;
   addBlock: (groupId: number, newBlock: Omit<BlockProps, 'id'>) => void;
@@ -230,6 +231,14 @@ export const createBlockSlice: StateCreator<
       ],
     },
   ],
+  addGroup: (groupName: string) => {
+    return set({
+      blockGroups: [
+        ...get().blockGroups,
+        { id: generateId(), name: groupName, blocks: [] },
+      ],
+    });
+  },
   setBlockGroups: (blockGroups: BlockGroup[]) => {
     return set({ blockGroups });
   },

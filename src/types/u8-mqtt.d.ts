@@ -1,4 +1,4 @@
-declare module 'u8-mqtt/esm/web/v4.mjs' {
+declare module 'u8-mqtt/esm/web/v4.min.js' {
   export class MQTTv4 {
     with_websock: (url: string) => this;
     with_autoreconnect: (milliseconds?: number) => void;

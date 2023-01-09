@@ -91,15 +91,15 @@ export function AddBlockPage() {
             }
           )}
         </Select>
-      </label>{' '}
+      </label>
       <label>
         text?
         <Input name="text" type="text" />
-      </label>{' '}
+      </label>
       <label>
         payload?
         <Input name="payload" type="text" />
-      </label>{' '}
+      </label>
       <label>
         pubTopic?
         <Input name="topicToPub" type="text" />
