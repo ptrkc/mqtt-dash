@@ -8,6 +8,7 @@ export enum BlockComponent {
   Range = 'range',
   Logger = 'logger',
   Switch = 'switch',
+  Image = 'image',
 }
 
 interface BaseBlock {
@@ -17,6 +18,13 @@ interface BaseBlock {
 export interface LoggerBlock extends BaseBlock {
   component: BlockComponent.Logger;
   types: LogType[];
+}
+
+export interface ImageBlock extends BaseBlock {
+  component: BlockComponent.Image;
+  topicToSub: string;
+  topicToPub?: string;
+  payload?: string;
 }
 
 export interface ButtonBlockPub extends BaseBlock {
@@ -77,7 +85,8 @@ export type BlockProps =
   | RangeBlockPubSub
   | SwitchBlockPub
   | SwitchBlockSub
-  | SwitchBlockPubSub;
+  | SwitchBlockPubSub
+  | ImageBlock;
 
 export interface BlockGroup {
   name: string;
@@ -208,6 +217,15 @@ export const createBlockSlice: StateCreator<
           payload: 'NO',
           topicToPub: 'YESNO',
           id: 11,
+        },
+        { id: 12, component: BlockComponent.Image, topicToSub: 'image' },
+        {
+          id: 13,
+          component: BlockComponent.Image,
+          topicToSub: 'image',
+          topicToPub: 'image',
+          payload:
+            'https://pointlesseffect.files.wordpress.com/2012/12/image39.jpg',
         },
       ],
     },

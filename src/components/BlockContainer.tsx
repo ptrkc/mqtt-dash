@@ -5,6 +5,7 @@ import { BlockButton } from '@/components/BlockButton';
 import { BlockLogger } from '@/components/BlockLogger';
 import { BlockRange } from '@/components/BlockRange';
 import { BlockSwitch } from '@/components/BlockSwitch';
+import { BlockImage } from '@/components/BlockImage';
 import { Handle } from '@/components/Handle';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { BlockProps } from '@/stores/blockSlice';
@@ -21,6 +22,8 @@ function BlockComponent({ block }: { block: BlockProps }) {
       return <BlockLogger block={block} />;
     case 'switch':
       return <BlockSwitch block={block} />;
+    case 'image':
+      return <BlockImage block={block} />;
     default:
       return null;
   }
