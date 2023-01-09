@@ -50,6 +50,8 @@ export interface RangeBlockPubSub extends RangeBlockBase {
 interface SwitchBlockBase extends BaseBlock {
   component: BlockComponent.Switch;
   text?: string;
+  onValue: string;
+  offValue: string;
 }
 export interface SwitchBlockPub extends SwitchBlockBase {
   topicToSub?: never;
@@ -140,12 +142,16 @@ export const createBlockSlice: StateCreator<
           topicToPub: BlockComponent.Switch,
           text: 'pub',
           localState: '0',
+          onValue: '1',
+          offValue: '0',
         },
         {
           id: 5,
           component: BlockComponent.Switch,
           topicToSub: BlockComponent.Switch,
           text: 'sub',
+          onValue: '1',
+          offValue: '0',
         },
         {
           id: 6,
@@ -153,6 +159,8 @@ export const createBlockSlice: StateCreator<
           topicToPub: BlockComponent.Switch,
           topicToSub: BlockComponent.Switch,
           text: 'pub-sub',
+          onValue: '1',
+          offValue: '0',
         },
       ],
     },
@@ -177,7 +185,31 @@ export const createBlockSlice: StateCreator<
     {
       name: '4th',
       id: 4,
-      blocks: [],
+      blocks: [
+        {
+          component: BlockComponent.Switch,
+          text: 'YES/NO',
+          topicToPub: 'YESNO',
+          topicToSub: 'YESNO',
+          onValue: 'YES',
+          offValue: 'NO',
+          id: 9,
+        },
+        {
+          component: BlockComponent.Button,
+          text: 'YES',
+          payload: 'YES',
+          topicToPub: 'YESNO',
+          id: 10,
+        },
+        {
+          component: BlockComponent.Button,
+          text: 'NO',
+          payload: 'NO',
+          topicToPub: 'YESNO',
+          id: 11,
+        },
+      ],
     },
   ],
   setBlockGroups: (blockGroups: BlockGroup[]) => {

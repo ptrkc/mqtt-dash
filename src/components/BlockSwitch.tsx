@@ -8,25 +8,27 @@ import {
 } from '@/stores/blockSlice';
 
 export function BlockSwitch({
-  block: { topicToSub, topicToPub, localState, text, id },
+  block: { topicToSub, topicToPub, localState, text, id, onValue, offValue },
 }: {
   block: SwitchBlockPub | SwitchBlockSub | SwitchBlockPubSub;
 }) {
-  const { publish, lastMessage = localState ?? '0' } = useBlock({
+  const { publish, lastMessage = localState ?? offValue } = useBlock({
     topicToPub,
     topicToSub,
     blockId: id,
   });
-  const [isOn, setIsOn] = useState(lastMessage === '0' ? false : true);
+  const [isOn, setIsOn] = useState(lastMessage === onValue);
 
   useEffect(() => {
-    setIsOn(lastMessage === '1');
+    if ([onValue, offValue].includes(lastMessage)) {
+      setIsOn(lastMessage === onValue);
+    }
   }, [lastMessage]);
 
   const onChange = () => {
     if (topicToPub) {
       setIsOn(!isOn);
-      publish(isOn ? '0' : '1');
+      publish(isOn ? offValue : onValue);
     }
   };
 
