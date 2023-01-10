@@ -4,9 +4,9 @@ import shallow from 'zustand/shallow';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { Board } from '@/components/Board';
-import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { Switch } from '@/components/Switch';
 import { AddGroupButtonModal } from '@/components/AddGroupButtonModal';
+import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 
 const selector = (state: BoundState) => ({
   editMode: state.editMode,
@@ -37,7 +37,7 @@ function HomeTop() {
   return (
     <div className="flex flex-col mx-auto justify-center items-center gap-3 p-2">
       <h1>MQTT-Dash</h1>
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex flex-col gap-4 justify-center items-center sm:flex-row">
         <div className="flex flex-col items-start gap-2">
           <label className="flex flex-col gap-2">
             <span>Topic to sub:</span>
@@ -56,11 +56,11 @@ function HomeTop() {
             pub to &quot;{topic}&quot;
           </Button>
         </div>
-        <label className="flex flex-col gap-2">
-          Toggle Edit Mode:
-          <Switch checked={editMode} onChange={toggleEdit} />
-        </label>
-        <div>
+        <div className="flex flex-col gap-2">
+          <label className="flex justify-center items-center gap-2">
+            <span>Toggle Edit Mode:</span>
+            <Switch checked={editMode} onChange={toggleEdit} />
+          </label>
           <Button onClick={disconnect}>Disconnect</Button>
           <AddGroupButtonModal />
         </div>

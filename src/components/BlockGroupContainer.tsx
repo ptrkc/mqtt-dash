@@ -15,6 +15,7 @@ import {
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import { AddBlockButton } from '@/components/AddBlockButton';
 import { BlockContainer } from '@/components/BlockContainer';
+import { DeleteGroupButtonModal } from '@/components/DeleteGroupButtonModal';
 import { Handle } from '@/components/Handle';
 import { SortableBlockContainer } from '@/components/SortableBlockContainer';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
@@ -81,6 +82,7 @@ export const BlockGroupContainer = forwardRef(
           </h2>
           {editMode && (
             <div className="flex gap-2">
+              <DeleteGroupButtonModal groupId={group.id} />
               <AddBlockButton groupId={group.id} />
               <Handle attributes={attributes} listeners={listeners} />
             </div>

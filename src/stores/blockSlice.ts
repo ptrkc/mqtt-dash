@@ -1,7 +1,7 @@
-import { generateId } from '@/utils/generateId';
 import { StateCreator } from 'zustand';
-import { ClientSlice, LogType } from './clientSlice';
-import { ConfigSlice } from './configSlice';
+import { ClientSlice, LogType } from '@/stores/clientSlice';
+import { ConfigSlice } from '@/stores/configSlice';
+import { generateId } from '@/utils/generateId';
 
 export enum BlockComponent {
   Button = 'button',
@@ -96,6 +96,7 @@ export interface BlockGroup {
 export interface BlockSlice {
   blockGroups: BlockGroup[];
   addGroup: (groupName: string) => void;
+  deleteGroup: (groupId: number) => void;
   setBlockGroups: (blockGroups: BlockGroup[]) => void;
   setGroupBlocks: (groupId: number, blocks: BlockProps[]) => void;
   addBlock: (groupId: number, newBlock: Omit<BlockProps, 'id'>) => void;
@@ -237,6 +238,11 @@ export const createBlockSlice: StateCreator<
         ...get().blockGroups,
         { id: generateId(), name: groupName, blocks: [] },
       ],
+    });
+  },
+  deleteGroup: (groupId: number) => {
+    return set({
+      blockGroups: get().blockGroups.filter(group => group.id !== groupId),
     });
   },
   setBlockGroups: (blockGroups: BlockGroup[]) => {

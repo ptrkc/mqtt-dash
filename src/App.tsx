@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ConnectPage } from '@/pages/ConnectPage';
 import { DashHomePage } from '@/pages/DashHomePage';
-import { AddBlockPage } from './pages/AddBlockPage';
+import { AddBlockPage } from '@/pages/AddBlockPage';
 
 const router = createBrowserRouter([
   {

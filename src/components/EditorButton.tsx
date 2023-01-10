@@ -1,6 +1,10 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react';
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  forwardRef,
+  ReactNode,
+} from 'react';
 import { cn } from '@/utils/classnames';
-import { forwardRef } from 'react';
 
 type EditorButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,

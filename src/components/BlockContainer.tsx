@@ -2,15 +2,15 @@ import { forwardRef, Ref } from 'react';
 import { DraggableAttributes } from '@dnd-kit/core';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import { BlockButton } from '@/components/BlockButton';
+import { BlockImage } from '@/components/BlockImage';
 import { BlockLogger } from '@/components/BlockLogger';
 import { BlockRange } from '@/components/BlockRange';
 import { BlockSwitch } from '@/components/BlockSwitch';
-import { BlockImage } from '@/components/BlockImage';
+import { DeleteBlockButtonModal } from '@/components/DeleteBlockButtonModal';
 import { Handle } from '@/components/Handle';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { BlockProps } from '@/stores/blockSlice';
 import { cn } from '@/utils/classnames';
-import { DeleteBlockButtonModal } from './DeleteBlockButtonModal';
 
 function BlockComponent({ block }: { block: BlockProps }) {
   switch (block.component) {
