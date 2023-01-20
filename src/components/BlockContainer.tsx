@@ -11,6 +11,7 @@ import { Handle } from '@/components/Handle';
 import { BoundState, useBoundStore } from '@/hooks/useBoundStore';
 import { BlockProps } from '@/stores/blockSlice';
 import { cn } from '@/utils/classnames';
+import { EditBlockButton } from './EditBlockButton';
 
 function BlockComponent({ block }: { block: BlockProps }) {
   switch (block.component) {
@@ -61,6 +62,7 @@ export const BlockContainer = forwardRef(
           </div>
           {editMode && (
             <div className="flex gap-2">
+              <EditBlockButton blockId={block.id} />
               <DeleteBlockButtonModal blockId={block.id} />
               <Handle attributes={attributes} listeners={listeners} />
             </div>
