@@ -45,6 +45,11 @@ export function ConnectPage() {
     await connect(url);
   };
 
+  const onCancel = () => {
+    setConfig({ brokerUrl: url, autoConnect: false });
+    window.location.reload();
+  };
+
   const isLoading = status === 'connecting';
   return (
     <form
@@ -81,7 +86,7 @@ export function ConnectPage() {
       </Button>
       <Button
         type="button"
-        onClick={() => window.location.reload()}
+        onClick={onCancel}
         color="red"
         disabled={!isLoading}
       >

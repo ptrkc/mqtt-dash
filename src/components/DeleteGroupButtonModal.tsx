@@ -8,7 +8,7 @@ export function DeleteGroupButtonModal({ groupId }: { groupId: number }) {
   return (
     <DeleteModal
       deleteFunction={() => deleteGroup(groupId)}
-      description="This action will permanently delete this Block"
+      description="This action will permanently delete this Group"
       deleteText="Delete Group"
     />
   );
